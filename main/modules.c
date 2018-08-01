@@ -17,7 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "duk_trans_socket.h" // The debug functions from Duktape.
+//#include "duk_trans_socket.h" // The debug functions from Duktape.
 #include "duktape_utils.h"
 #include "logging.h"
 #include "modules.h"
@@ -354,6 +354,9 @@ static duk_ret_t js_esp32_getState(duk_context *ctx) {
 
 	duk_push_int(ctx, spi_flash_get_chip_size());
 	duk_put_prop_string(ctx, -2, "flashSize"); // Add flashSize to new getState
+
+	duk_push_int(ctx, 237);
+	duk_put_prop_string(ctx, -2, "jcode"); // Add flashSize to new getState
 
 #else /* ESP_PLATFORM */
 

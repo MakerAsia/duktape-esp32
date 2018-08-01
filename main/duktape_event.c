@@ -111,7 +111,7 @@ void event_newCallbackRequestedEvent(
 	esp32_duktape_callback_dataprovider dataProvider,
 	void *contextData) {
 
-	LOGD(">> event_newCallbackRequestedEvent stashKey=%d", stashKey);
+	// LOGD(">> event_newCallbackRequestedEvent stashKey=%d", stashKey);
 	esp32_duktape_event_t event;
 	event.type = ESP32_DUKTAPE_EVENT_CALLBACK_REQUESTED;
 	if (callbackType != ESP32_DUKTAPE_CALLBACK_TYPE_FUNCTION &&
@@ -128,7 +128,7 @@ void event_newCallbackRequestedEvent(
 	} else {
 		postEvent(&event, false);
 	}
-	LOGD("<< event_newCallbackRequestedEvent");
+	// LOGD("<< event_newCallbackRequestedEvent");
 } // event_newCallbackRequestedEvent
 
 

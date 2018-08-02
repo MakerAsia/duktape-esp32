@@ -18,6 +18,11 @@
         "system_error": "cpp",
         "unordered_map": "cpp",
         "unordered_set": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "memory": "cpp",
+        "queue": "cpp",
+        "utility": "cpp"
     }
 }

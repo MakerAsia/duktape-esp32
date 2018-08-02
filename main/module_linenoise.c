@@ -904,7 +904,9 @@ static duk_ret_t js_linenoise_setprompt(duk_context *ctx) {
  */
 static duk_ret_t js_linenoise_poll(duk_context *ctx) {
 	static int ready = 0;
-	if(!ourstate) return 0;
+	if(!ourstate) 
+		return 0;
+		
 	void prepare(void) {
 		setup(ourstate);
 	}

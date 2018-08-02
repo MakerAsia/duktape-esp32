@@ -43,6 +43,7 @@
 #include "module_wifi.h"
 #include "module_kidbright.h"
 #include "module_matrix.h"
+#include "module_display.h"
 LOG_TAG("modules");
 
 /**
@@ -110,6 +111,7 @@ functionTableEntry_t functionTable[] = {
 	{ "ModuleSSL",        ModuleSSL,        1},
 	{ "ModuleKidbright",  ModuleKidbright,  1},
 	{ "ModuleMatrix",  	  ModuleMatrix,     1},
+	{ "ModuleDisplay", 	  ModuleDisplay,    1},
 #endif // ESP_PLATFORM
 	// Must be last entry
 	{NULL, NULL, 0 } // *** DO NOT DELETE *** - MUST BE LAST ENTRY.

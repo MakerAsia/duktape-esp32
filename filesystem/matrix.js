@@ -41,6 +41,40 @@ function matrix() {
 		test: function() {
 			console.log("Matrix test OK ###########################");
 		}, // getLevel
+		
+		//
+		// setInterruptHandler
+		// Set the interrupt handler for this GPIO.
+		// intrType - One of:
+		//  - INTR_ANYEDGE		
+		//  - INTR_DISABLE
+		//  - INTR_NEGEDGE		
+		//  - INTR_POSEDGE
+		// 
+		drawPixel: function(x, y, color) {
+		    internalMatrix.drawPixel(x, y, color);
+		},
+		
+		//
+		// getLevel
+		// Get the current signal level of the GPIO.
+		//
+		writeDisplay: function() {
+			internalMatrix.writeDisplay();
+		},
+		
+		clear: function() {
+			internalMatrix.clear();
+		},		
+		
+		print: function( text ) {
+			internalMatrix.print( text );
+		},
+		
+		setCursor: function(x, y) {
+		    internalMatrix.setCursor(x, y);
+		}				
+		
 	}; // End ret
 	return ret;
 } // matrix

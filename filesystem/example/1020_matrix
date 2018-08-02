@@ -1,6 +1,0 @@
-var Matrix = require("matrix.js");
-
-var matrix = new Matrix();
-matrix.test();
-
-console.log("I'm ok");

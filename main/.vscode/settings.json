@@ -1,0 +1,23 @@
+{
+    "files.associations": {
+        "random": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "iterator": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "atomic": "cpp",
+        "deque": "cpp",
+        "ios": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "system_error": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "*.ipp": "cpp"
+    }
+}

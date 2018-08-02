@@ -23,6 +23,7 @@
         "initializer_list": "cpp",
         "memory": "cpp",
         "queue": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "locale": "c"
     }
 }

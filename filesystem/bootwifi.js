@@ -99,7 +99,7 @@ function startWebServer() {
 } // startWebServer 
 
 
-function becomeAccessPoint() {
+function becomeAccessPoint(bootedCallback) {
 	log("Becoming an access point");
 	WIFI.start();
 	WIFI.listen({
@@ -115,6 +115,7 @@ function becomeAccessPoint() {
 		
 		// and start a WebServer
 		startWebServer();
+		//bootedCallback();
 	});
 } // becomeAccessPoint()
 
@@ -136,9 +137,11 @@ function bootwifi(bootedCallback) {
 	
 	bootWiFi_ns.close();
 	
+	//ssid = null;
+	
 	if (ssid === null || ssid.length === 0 || password === null || ip === null ||
 			gw === null || netmask === null) {
-		becomeAccessPoint();
+		becomeAccessPoint(bootedCallback);
 		return;
 	}
 	
@@ -159,7 +162,7 @@ function bootwifi(bootedCallback) {
 			if (err !== null) {
 				log("Performing a stop of WiFi");
 				WIFI.stop();
-				becomeAccessPoint();
+				becomeAccessPoint(bootedCallback);
 			} else {
 				log("Onwards ... we are now network connected!");
 				bootedCallback();

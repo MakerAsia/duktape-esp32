@@ -105,7 +105,9 @@ var _timers = {
 			}
 		}
 	} // cancelTimer
+
 };
+
 
 function cancelInterval(id) {
 	_timers.cancelTimer(id);

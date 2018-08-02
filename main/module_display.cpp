@@ -80,7 +80,7 @@ static duk_ret_t js_dx_setTextSize(duk_context *ctx) {
 }
 
 static duk_ret_t js_dx_drawString(duk_context *ctx) {
-    int color = duk_get_int(ctx, -1);
+    int font = duk_get_int(ctx, -1);
     int y = duk_get_int(ctx, -2);
     int x = duk_get_int(ctx, -3);
 
@@ -97,8 +97,104 @@ static duk_ret_t js_dx_drawString(duk_context *ctx) {
 
 	LOGD("Writing %d bytes to display", size);
 
-	display.drawString(buffer,x,y,color);
+	int r = display.drawString(buffer,x,y,font);
+	duk_push_int(ctx, r);
+
+	return 1;
+}
+
+static duk_ret_t js_dx_drawChar(duk_context *ctx) {
+    int font = duk_get_int(ctx, -1);
+    int y = duk_get_int(ctx, -2);
+    int x = duk_get_int(ctx, -3);
+    int c = duk_get_int(ctx, -4);
+
+	int r = display.drawChar(c,x,y,font);
+	duk_push_int(ctx, r);
+
+	return 1;
+}
+
+static duk_ret_t js_dx_drawRect(duk_context *ctx) {
+    int color = duk_get_int(ctx, -1);
+    int h = duk_get_int(ctx, -2);
+    int w = duk_get_int(ctx, -3);
+    int y = duk_get_int(ctx, -4);
+    int x = duk_get_int(ctx, -5);
+
+	display.drawRect(x,y,w,h,color);
 	return 0;
+}
+
+static duk_ret_t js_dx_fillRect(duk_context *ctx) {
+    int color = duk_get_int(ctx, -1);
+    int h = duk_get_int(ctx, -2);
+    int w = duk_get_int(ctx, -3);
+    int y = duk_get_int(ctx, -4);
+    int x = duk_get_int(ctx, -5);
+
+	display.fillRect(x,y,w,h,color);
+	return 0;
+}
+
+static duk_ret_t js_dx_drawCircle(duk_context *ctx) {
+    int color = duk_get_int(ctx, -1);
+    int r = duk_get_int(ctx, -2);
+    int y = duk_get_int(ctx, -3);
+    int x = duk_get_int(ctx, -4);
+
+	display.drawCircle(x,y,r,color);
+	return 0;
+}
+
+static duk_ret_t js_dx_fillCircle(duk_context *ctx) {
+    int color = duk_get_int(ctx, -1);
+    int r = duk_get_int(ctx, -2);
+    int y = duk_get_int(ctx, -3);
+    int x = duk_get_int(ctx, -4);
+
+	display.fillCircle(x,y,r,color);
+	return 0;
+}
+
+static duk_ret_t js_dx_drawTriangle(duk_context *ctx) {
+    int color = duk_get_int(ctx, -1);
+    int y3 = duk_get_int(ctx, -2);
+    int x3 = duk_get_int(ctx, -3);
+    int y2 = duk_get_int(ctx, -4);
+    int x2 = duk_get_int(ctx, -5);
+    int y1 = duk_get_int(ctx, -6);
+    int x1 = duk_get_int(ctx, -7);
+
+	display.drawTriangle(x1,y1,x2,y2,x3,y3,color);
+	return 0;
+}
+
+static duk_ret_t js_dx_fillTriangle(duk_context *ctx) {
+    int color = duk_get_int(ctx, -1);
+    int y3 = duk_get_int(ctx, -2);
+    int x3 = duk_get_int(ctx, -3);
+    int y2 = duk_get_int(ctx, -4);
+    int x2 = duk_get_int(ctx, -5);
+    int y1 = duk_get_int(ctx, -6);
+    int x1 = duk_get_int(ctx, -7);
+
+	display.fillTriangle(x1,y1,x2,y2,x3,y3,color);
+	return 0;
+}
+
+static duk_ret_t js_dx_width(duk_context *ctx) {
+	int w = display.width();
+	duk_push_int(ctx, w);
+
+	return 1;
+}
+
+static duk_ret_t js_dx_height(duk_context *ctx) {
+	int h = display.height();
+	duk_push_int(ctx, h);
+
+	return 1;
 }
 
 extern "C" {
@@ -113,7 +209,15 @@ extern "C" {
 		ADD_FUNCTION("setTextColor",   	js_dx_setTextColor, 1);
 		ADD_FUNCTION("setTextSize",   	js_dx_setTextSize,  1);
 		ADD_FUNCTION("drawString",   	js_dx_drawString,   4);
-
+		ADD_FUNCTION("drawChar",   		js_dx_drawChar,   	4);
+		ADD_FUNCTION("drawRect",   		js_dx_drawRect,   	5);
+		ADD_FUNCTION("fillRect",   		js_dx_fillRect,   	5);
+		ADD_FUNCTION("drawCircle",  	js_dx_drawCircle,	4);
+		ADD_FUNCTION("fillCircle",   	js_dx_fillCircle,  	4);
+		ADD_FUNCTION("drawTriangle",   	js_dx_drawTriangle, 7);
+		ADD_FUNCTION("fillTriangle",   	js_dx_fillTriangle, 7);
+		ADD_FUNCTION("width",   		js_dx_width, 		0);
+		ADD_FUNCTION("height",   		js_dx_height, 		0);
 
         ADD_INT("BLACK",            0x0000);      /*   0,   0,   0 */
         ADD_INT("NAVY",             0x000F);      /*   0,   0, 128 */

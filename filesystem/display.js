@@ -39,7 +39,7 @@ function display() {
 		// Get the current signal level of the GPIO.
 		//
 		test: function() {
-			console.log("Display test OK ###########################");
+			console.log("Display test OK");
 		}, // getLevel
 		
 		fillScreen: function( color ) {
@@ -58,9 +58,45 @@ function display() {
 		    internalDisplay.setTextSize(size);
 		},		
 
-		drawString: function(text, x, y, color) {
-		    internalDisplay.drawString(text, x, y, color);
+		drawString: function(text, x, y, font) {
+		    return internalDisplay.drawString(text, x, y, font);
 		},		
+
+		drawChar: function(c, x, y, font) {
+		    return internalDisplay.drawChar(c, x, y, font);
+		},		
+
+		drawRect: function(x, y, w, h, color) {
+		    internalDisplay.drawRect(x, y, w, h, color);
+		},		
+
+		fillRect: function(x, y, w, h, color) {
+		    internalDisplay.fillRect(x, y, w, h, color);
+		},
+
+		drawCircle: function(x, y, r, color) {
+		    internalDisplay.drawCircle(x, y, r, color);
+		},		
+
+		fillCircle: function(x, y, r, color) {
+		    internalDisplay.fillCircle(x, y, r, color);
+		},
+		
+		drawTriangle: function(x1, y1, x2, y2, x3, y3, color) {
+		    internalDisplay.drawTriangle(x1, y1, x2, y2, x3, y3, color);
+		},		
+
+		fillTriangle: function(x1, y1, x2, y2, x3, y3, color) {
+		    internalDisplay.fillTriangle(x1, y1, x2, y2, x3, y3, color);
+		},	
+		
+		width: function() {
+			return internalDisplay.width();
+		},			
+
+		height: function() {
+			return internalDisplay.height();
+		}			
 
 	}; // End ret
 	return ret;

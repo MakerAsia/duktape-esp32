@@ -39,7 +39,7 @@ function matrix() {
 		// Get the current signal level of the GPIO.
 		//
 		test: function() {
-			console.log("Matrix test OK ###########################");
+			console.log("Matrix test OK");
 		}, // getLevel
 		
 		//
@@ -80,6 +80,7 @@ function matrix() {
 			{
 				cancelInterval(matrixScrollID);
 				internalMatrix.clear();
+				internalMatrix.writeDisplay();
 				return;
 			}
 			if( matrixScrollID != -1 ) {
@@ -100,7 +101,7 @@ function matrix() {
 				that.writeDisplay();
 				
 				x--;
-				if( x < -48 )
+				if( x < (0-(text.length * 8)+16) )
 					x = 16;    
 			}, 80);
 		}

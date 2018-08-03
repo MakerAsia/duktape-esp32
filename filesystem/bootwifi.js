@@ -119,8 +119,8 @@ function becomeAccessPoint(bootedCallback) {
 		matrix.printScroll( cpuid );
 		
 		// and start a WebServer
-		//startWebServer();
-		bootedCallback(cpuid);
+		startWebServer();
+		//bootedCallback(cpuid);
 	});
 } // becomeAccessPoint()
 

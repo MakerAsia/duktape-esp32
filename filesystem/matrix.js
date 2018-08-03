@@ -73,7 +73,21 @@ function matrix() {
 		
 		setCursor: function(x, y) {
 		    internalMatrix.setCursor(x, y);
-		}				
+		},
+		
+		printScroll: function(text) {
+			var x = 16;
+			setInterval(function() {
+				internalMatrix.clear();
+				internalMatrix.setCursor( x, 0 );
+				internalMatrix.print( text );
+				internalMatrix.writeDisplay();
+				
+				x--;
+				if( x < 0-(text.length * 8) )
+					x = 16;    
+			}, 80);
+		}
 		
 	}; // End ret
 	return ret;

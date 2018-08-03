@@ -15,9 +15,7 @@
 var http = require("http");
 var ws = require("ws");
 var FS = require("fs");
-var Matrix = require("matrix.js");
 
-var matrix = new Matrix();
 
 var _firstHit = true;
 /**
@@ -63,7 +61,7 @@ function requestHandler(request, response) {
 	var postData = "";
 
 	if (_firstHit) {
-		matrix.stopScroll();
+		//matrix.stopScroll();
 		_firstHit = false;
 	}
 	request.on("data", function (data) {

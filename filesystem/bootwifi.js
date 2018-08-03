@@ -28,7 +28,9 @@
 var NVS  = require("nvs.js");
 var HTTP = require("http.js");
 var URL  = require("url.js");
+var Matrix = require("matrix.js");
 
+var matrix = new Matrix();
 /*
  *  Start a WebServer on port 80.  The server will serve up the access point
  *  settings page that allows the user to supply the details of the access
@@ -100,7 +102,7 @@ function startWebServer() {
 
 
 function becomeAccessPoint(bootedCallback) {
-	var cpuid = ESP.getState().cpuid;
+	var cpuid = ESP32.getState().cpuid;
 
 	log("Becoming an access point");
 	WIFI.start();
@@ -116,6 +118,7 @@ function becomeAccessPoint(bootedCallback) {
 		log("IP Address: " + WIFI.getState().apIp);
 		log("AP SSID: " + "esp32-"+cpuid);
 		
+		matrix.printScroll( cpuid );
 		// and start a WebServer
 		startWebServer();
 		//bootedCallback();
@@ -168,6 +171,8 @@ function bootwifi(bootedCallback) {
 				becomeAccessPoint(bootedCallback);
 			} else {
 				log("Onwards ... we are now network connected!");
+				log("IP Address: " + WIFI.getState().staIp);
+				matrix.printScroll( WIFI.getState().staIp )
 				bootedCallback();
 			}
 			log("ESP32 Heap: " + ESP32.getState().heapSize);

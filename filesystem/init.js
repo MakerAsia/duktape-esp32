@@ -125,4 +125,12 @@ function setTimeout(callback, interval) {
 	return _timers.setTimer(callback, interval, false);
 }
 
+function clearIntervals() {
+	var id = setInterval(function() {
+	});
+	for( var i=0; i<=id; i++ ) {
+		cancelTimeout(i);
+	}
+}
+
 var _loop = require("loop.js");

@@ -21,6 +21,8 @@
  * ----
  */
 
+var __prnScrlID = -1;
+
 var moduleMatrix = ESP32.getNativeFunction("ModuleMatrix");
 if (moduleMatrix === null) {
 	log("Unable to find ModuleMatrix");
@@ -39,7 +41,7 @@ function matrix() {
 		// Get the current signal level of the GPIO.
 		//
 		test: function() {
-			console.log("Matrix test OK ###########################");
+			console.log("Matrix test OK");
 		}, // getLevel
 		
 		//
@@ -74,17 +76,25 @@ function matrix() {
 		setCursor: function(x, y) {
 		    internalMatrix.setCursor(x, y);
 		},
+
+		stopScroll: function() {
+			if( __prnScrlID != -1 ) {
+				cancelInterval( __prnScrlID );
+				internalMatrix.clear();
+				internalMatrix.writeDisplay();
+			}
+		},
 		
 		printScroll: function(text) {
 			var x = 16;
-			setInterval(function() {
+			__prnScrlID = setInterval(function() {
 				internalMatrix.clear();
 				internalMatrix.setCursor( x, 0 );
 				internalMatrix.print( text );
 				internalMatrix.writeDisplay();
 				
 				x--;
-				if( x < 0-(text.length * 8) )
+				if( x < (0-(text.length * 8)+16) )
 					x = 16;    
 			}, 80);
 		}

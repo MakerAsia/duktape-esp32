@@ -100,10 +100,12 @@ function startWebServer() {
 
 
 function becomeAccessPoint(bootedCallback) {
+	var cpuid = ESP.getState().cpuid;
+
 	log("Becoming an access point");
 	WIFI.start();
 	WIFI.listen({
-		ssid: "esp32-duktape",
+		ssid: "esp32-"+cpuid,
 		auth: "open"
 	}, function() {
 		log("Wifi Callback!!!");
@@ -112,6 +114,7 @@ function becomeAccessPoint(bootedCallback) {
 		log("* Now an Access Point *");
 		log("***********************");
 		log("IP Address: " + WIFI.getState().apIp);
+		log("AP SSID: " + "esp32-"+cpuid);
 		
 		// and start a WebServer
 		startWebServer();

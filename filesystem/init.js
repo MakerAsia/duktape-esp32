@@ -21,6 +21,7 @@ if (!String.prototype.startsWith) {
 }
 */
 
+
 StringUtils = {
 	endsWith: function(subjectString, searchString, position) {
       if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
@@ -65,6 +66,8 @@ Duktape.modSearch = function(id, require, exports, module) {
 var _isr_gpio = {};
 
 var _sockets= {};
+
+var kidbright = {};
 
 var _timers = {
 	nextId: 1,

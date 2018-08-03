@@ -61,7 +61,7 @@ function requestHandler(request, response) {
 	var postData = "";
 
 	if (_firstHit) {
-		//matrix.stopScroll();
+		kidbright.matrix.stopScroll();
 		_firstHit = false;
 	}
 	request.on("data", function (data) {

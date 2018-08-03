@@ -28,6 +28,20 @@
 var NVS  = require("nvs.js");
 var HTTP = require("http.js");
 var URL  = require("url.js");
+var LED = require("led.js");
+var Matrix = require("matrix.js");
+
+var _mtx = new Matrix();
+
+kidbright['matrix'] = _mtx;
+kidbright['ledBT'] = new LED(17);
+kidbright['ledWIFI'] = new LED(2);
+kidbright['ledNTP'] = new LED(15);
+kidbright['ledIOT'] = new LED(12);
+kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],kidbright['ledIOT']]
+kidbright['delay'] = function( time ) {
+	DUKF.sleep(time);
+}
 
 /*
  *  Start a WebServer on port 80.  The server will serve up the access point
@@ -116,7 +130,7 @@ function becomeAccessPoint(bootedCallback) {
 		log("IP Address: " + WIFI.getState().apIp);
 		log("AP SSID: " + "esp32-"+cpuid);
 		
-		//matrix.printScroll( cpuid );
+		_mtx.printScroll( cpuid );
 		// and start a WebServer
 		startWebServer();
 		//bootedCallback();
@@ -170,7 +184,7 @@ function bootwifi(bootedCallback) {
 			} else {
 				log("Onwards ... we are now network connected!");
 				log("IP Address: " + WIFI.getState().staIp);
-				//matrix.printScroll( WIFI.getState().staIp )
+				_mtx.printScroll( WIFI.getState().staIp )
 				bootedCallback();
 			}
 			log("ESP32 Heap: " + ESP32.getState().heapSize);

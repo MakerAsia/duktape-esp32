@@ -109,7 +109,7 @@ functionTableEntry_t functionTable[] = {
 	{ "ModuleSerialVFS",  ModuleSerialVFS,  1},
 	{ "ModuleSPI",        ModuleSPI,        1},
 	{ "ModuleSSL",        ModuleSSL,        1},
-	{ "ModuleKidbright",  ModuleKidbright,  1},
+	{ "ModuleMatrix",  	  ModuleMatrix,  	1},
 	{ "ModuleDisplay", 	  ModuleDisplay,    1},
 #endif // ESP_PLATFORM
 	// Must be last entry

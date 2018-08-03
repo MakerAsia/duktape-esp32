@@ -361,8 +361,13 @@ static duk_ret_t js_esp32_getState(duk_context *ctx) {
 	duk_push_int(ctx, spi_flash_get_chip_size());
 	duk_put_prop_string(ctx, -2, "flashSize"); // Add flashSize to new getState
 
-	duk_push_int(ctx, 237);
-	duk_put_prop_string(ctx, -2, "jcode"); // Add flashSize to new getState
+    uint8_t chipid[6];
+	char temp[16];
+    esp_efuse_mac_get_default(chipid);	
+    sprintf(temp,"%X\n",(unsigned int)chipid);
+
+	duk_push_string(ctx, temp);
+	duk_put_prop_string(ctx, -2, "cpuid"); // Add cpuid to new getState
 
 #else /* ESP_PLATFORM */
 

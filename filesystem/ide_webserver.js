@@ -15,7 +15,10 @@
 var http = require("http");
 var ws = require("ws");
 var FS = require("fs");
+var Matrix = require("matrix.js");
 
+var macScrollID = -1;
+var matrix = new Matrix();
 
 /**
  * Read a file from the SPIFFS file system and send it to the output stream.
@@ -55,6 +58,10 @@ function saveFile(fileName, data) {
 
 
 function requestHandler(request, response) {
+	if( macScrollID != -1 ) {
+		matrix.stopScroll(macScrollID);
+		macScrollID = -1;
+	}
    log("IDE_WebServer: We have received a new HTTP client request!");
    DUKF.logHeap("requestHandler");
    var postData = "";
@@ -68,7 +75,9 @@ function requestHandler(request, response) {
    	function sendFile(fileToSend) {
 	      try {
 	      	fileName = DUKF.FILE_SYSTEM_ROOT + fileToSend;
-	      	log("File to read: " + fileName);
+			  log("File to read: " + fileName);
+			  if( fileName === '/spiffs/')
+			  	fileName = '/spiffs/index.html'
 	      	FS.statSync(fileName); // Will throw an error if file is not present
 	      	log("Loading file: " + fileName);
 	         response.writeHead(200);
@@ -146,9 +155,10 @@ function requestHandler(request, response) {
  * Start being an IDE
  * @returns N/A
  */
-function startIde() {
+function startIde( _matrixScrollID ) {
+	macScrollID = _matrixScrollID;
 
-	var WEBSERVER_PORT = 8000;
+	var WEBSERVER_PORT = 80;
 	var WEBSOCKET_PORT = 8002;
 	
 	var server = http.createServer(requestHandler);

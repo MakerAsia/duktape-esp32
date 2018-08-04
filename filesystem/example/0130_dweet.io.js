@@ -8,7 +8,7 @@ setInterval(function() {
     kidbright.matrix.print( ""+light );
     kidbright.matrix.writeDisplay();
     kidbright.dweet.send(ESP32.getState().cpuid,"light",light);
-}, 5000);
+}, 15000);
 
 //https://dweet.io/get/dweets/for/my-thing-name
 

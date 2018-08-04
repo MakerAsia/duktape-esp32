@@ -3,28 +3,36 @@ function led(pinNumber) {
     var _gpio = new GPIO(pinNumber);
     _gpio.setDirection(GPIO.OUTPUT); 
     _gpio.setLevel(GPIO.HIGH);
+    var _timerid = new Number();
+    _timerid = -1;
+    
     var ret = {
         gpio: _gpio,
+        timerid: _timerid,
             //
 		// getLevel
 		// Get the current signal level of the GPIO.
 		//
 		on: function() {
 			_gpio.setLevel(GPIO.LOW);
+            if( _timerid != -1 )
+                cancelInterval(_timerid);
 		}, // getLevel
 
         off: function() {
-			_gpio.setLevel(GPIO.HIGH);
+            _gpio.setLevel(GPIO.HIGH);
+            if( _timerid != -1 )
+                cancelInterval(_timerid);
         }, // getLevel
         
         blink: function( time_on, time_off ) {
             var that = this;
-            setInterval(function() {
-                that.on();
-                DUKF.sleep(time_on);
-                that.off();
-                DUKF.sleep(time_off);
-            }, 1000);
+            _timerid = setInterval(function() {
+                _gpio.setLevel(GPIO.LOW);
+                var t = setTimeout(function(){ 
+                    _gpio.setLevel(GPIO.HIGH); 
+                }, time_on);
+            }, time_on+time_off);
         }
     }
     return ret;

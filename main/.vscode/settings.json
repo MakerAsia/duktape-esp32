@@ -24,6 +24,7 @@
         "memory": "cpp",
         "queue": "cpp",
         "utility": "cpp",
-        "locale": "c"
+        "locale": "c",
+        "istream": "cpp"
     }
 }

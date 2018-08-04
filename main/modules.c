@@ -41,9 +41,9 @@
 #include "module_spi.h"
 #include "module_ssl.h"
 #include "module_wifi.h"
-#include "module_kidbright.h"
 #include "module_matrix.h"
 #include "module_display.h"
+#include "module_button.h"
 LOG_TAG("modules");
 
 /**
@@ -54,6 +54,8 @@ static duk_ret_t js_console_log(duk_context *ctx) {
 	LOGD(">> js_console_log called");
 	duk_safe_to_string(ctx, -1);
 	const char *message = duk_get_string(ctx, -1);
+	char t[256];
+	sprintf( t, "%s\n", message );
 
 	// Let us now see if there is a console callback.  It will be
 	// console.handler = function(message)
@@ -63,12 +65,12 @@ static duk_ret_t js_console_log(duk_context *ctx) {
 	if (duk_is_function(ctx, -1)) {
 		// Aha ... there is a console.handler callback!
 		// Let us now call it.
-		duk_push_string(ctx, message);
+		duk_push_string(ctx, t);
 		duk_pcall(ctx, 1);
 	} // Check for a handler
 	else {
 		// No handler (either doesn't exist or not a function ... so just log
-		esp32_duktape_console(message);
+		esp32_duktape_console(t);
 	}
   return 0;
 } // js_console_log
@@ -111,6 +113,7 @@ functionTableEntry_t functionTable[] = {
 	{ "ModuleSSL",        ModuleSSL,        1},
 	{ "ModuleMatrix",  	  ModuleMatrix,  	1},
 	{ "ModuleDisplay", 	  ModuleDisplay,    1},
+	{ "ModuleButton", 	  ModuleButton,     1},
 #endif // ESP_PLATFORM
 	// Must be last entry
 	{NULL, NULL, 0 } // *** DO NOT DELETE *** - MUST BE LAST ENTRY.

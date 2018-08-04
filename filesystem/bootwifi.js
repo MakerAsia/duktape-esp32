@@ -29,6 +29,7 @@ var NVS  = require("nvs.js");
 var HTTP = require("http.js");
 var URL  = require("url.js");
 var LED = require("led.js");
+var BUTTON = require("button.js");
 var Matrix = require("matrix.js");
 
 var _mtx = new Matrix();
@@ -39,8 +40,21 @@ kidbright['ledWIFI'] = new LED(2);
 kidbright['ledNTP'] = new LED(15);
 kidbright['ledIOT'] = new LED(12);
 kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],kidbright['ledIOT']]
+kidbright['button1'] = new BUTTON(0);
+kidbright['button2'] = new BUTTON(1);
 kidbright['delay'] = function( time ) {
 	DUKF.sleep(time);
+}
+kidbright['update'] = function() {
+	kidbright.button1.read();
+	kidbright.button2.read();
+}
+kidbright['init'] = function() {
+	kidbright.ledBT.off();
+	kidbright.ledWIFI.off();
+	kidbright.ledNTP.off();
+	kidbright.ledIOT.off();
+	kidbright.matrix.stopScroll();
 }
 
 /*

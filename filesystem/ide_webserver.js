@@ -61,7 +61,7 @@ function requestHandler(request, response) {
 	var postData = "";
 
 	if (_firstHit) {
-		kidbright.matrix.stopScroll();
+		kidbright.init();
 		_firstHit = false;
 	}
 	request.on("data", function (data) {
@@ -107,6 +107,7 @@ function requestHandler(request, response) {
 			// request to run a script ...
 			log("We are about to run: " + postData);
 			clearIntervals();
+			kidbright.init();
 			try {
 				eval(postData);
 			} catch (e) {
@@ -119,6 +120,7 @@ function requestHandler(request, response) {
 		else if (pathParts[0] == "run" && request.method == "GET") {
 			if (pathParts.length > 1) {
 				clearIntervals();
+				kidbright.init();
 				fileName = "/" + pathParts.splice(1).join("/");
 				DUKF.runFile(fileName);
 			}

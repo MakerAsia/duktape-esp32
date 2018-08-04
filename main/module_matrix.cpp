@@ -91,7 +91,7 @@ static duk_ret_t js_mx_print(duk_context *ctx) {
 	char buffer[128];
 	memcpy( buffer, data, size );
 	buffer[size] = 0;
-	LOGD("Writing %d bytes to matrix", size);
+	//LOGD("Writing %d bytes to matrix", size);
 	matrix.print(buffer);
 	return 0;
 }

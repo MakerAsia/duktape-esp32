@@ -365,7 +365,8 @@ static duk_ret_t js_esp32_getState(duk_context *ctx) {
 
     uint8_t chipid[6];
 	char temp[16];
-    esp_efuse_mac_get_default(chipid);	
+    //esp_efuse_mac_get_default(chipid);	
+	esp_read_mac(chipid,0);
     sprintf(temp,"%X",(unsigned int)chipid);
 
 	duk_push_string(ctx, temp);

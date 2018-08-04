@@ -32,10 +32,13 @@ var LED = require("led.js");
 var BUTTON = require("button.js");
 var LDR = require("ldr.js");
 var Matrix = require("matrix.js");
+var Dweet = require("dweet.js");
 
+var _dweet = new Dweet();
 var _mtx = new Matrix();
 
 kidbright['matrix'] = _mtx;
+kidbright['dweet'] = _dweet;
 kidbright['ledBT'] = new LED(17);
 kidbright['ledWIFI'] = new LED(2);
 kidbright['ledNTP'] = new LED(15);

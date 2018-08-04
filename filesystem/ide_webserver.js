@@ -132,6 +132,15 @@ function requestHandler(request, response) {
 			// if GET /files  -- then pathParts.length == 1
 			if (pathParts.length == 1 && request.method == "GET") {
 				var filesArray = FS.spiffsDir();
+				// var includeDirs = ["*"];
+				var includeDirs = ["example", "tests"];
+				filesArray = filesArray.filter(function(f) { 
+					var file = f.name.split("/");
+					var isDir = (file.length > 1);
+					var isIncludeAll = includeDirs.indexOf("*") > -1;
+					var isInclude = includeDirs.indexOf(file[0]) > -1; 
+					return (isDir && isInclude) || isIncludeAll;
+				});
 				response.write(JSON.stringify(filesArray));
 			} else { // More parts than just /files
 				fileName = "/" + pathParts.splice(1).join("/");

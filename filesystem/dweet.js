@@ -6,12 +6,7 @@ var net = require("net.js");
 function DWEET() {
     var ret = {
         send: function( dweet_id, name, value ) {
-            var address = "dweet.io"; // httpbin.org
-            console.log("ID: " + ESP32.getState().cpuid );
-            log("Address: " + address);
-            if (address === null) {
-                return;
-            }
+            console.log("ID: " + dweet_id);
             function logHTTP(obj) {
                 log("HTTP Status Code: " + obj.httpStatus);
                 log("Headers: " + JSON.stringify(obj.headers));
@@ -22,7 +17,7 @@ function DWEET() {
             var path = "/dweet/for/"+dweet_id+"?"+name+"="+value
         
             http.request({
-                host : address,
+                host : "dweet.io",
                 port : 80,
                 path : path
             }, function(response) {

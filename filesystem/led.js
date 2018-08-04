@@ -8,6 +8,7 @@ function led(pinNumber) {
     
     var ret = {
         gpio: _gpio,
+        pin: pinNumber,
         timerid: _timerid,
             //
 		// getLevel

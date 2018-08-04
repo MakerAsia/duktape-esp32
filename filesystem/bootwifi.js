@@ -30,6 +30,7 @@ var HTTP = require("http.js");
 var URL  = require("url.js");
 var LED = require("led.js");
 var BUTTON = require("button.js");
+var LDR = require("ldr.js");
 var Matrix = require("matrix.js");
 
 var _mtx = new Matrix();
@@ -42,6 +43,7 @@ kidbright['ledIOT'] = new LED(12);
 kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],kidbright['ledIOT']]
 kidbright['button1'] = new BUTTON(0);
 kidbright['button2'] = new BUTTON(1);
+kidbright['ldr'] = new LDR();
 kidbright['delay'] = function( time ) {
 	DUKF.sleep(time);
 }

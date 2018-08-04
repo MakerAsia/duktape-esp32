@@ -35,6 +35,7 @@ function gpio(pinNumber) {
 	internalGpio.gpioInit(pinNumber);
 	var currentDirection;
 	var ret = {
+		pin: pinNumber,
 		//
 		// getLevel
 		// Get the current signal level of the GPIO.

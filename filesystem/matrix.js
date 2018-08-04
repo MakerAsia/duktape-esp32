@@ -71,6 +71,7 @@ function matrix() {
 		
 		print: function( text ) {
 			internalMatrix.print( text );
+			internalMatrix.writeDisplay();
 		},
 		
 		setCursor: function(x, y) {

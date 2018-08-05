@@ -367,7 +367,11 @@ static duk_ret_t js_esp32_getState(duk_context *ctx) {
 	char temp[16];
 
 	esp_read_mac(mac, ESP_MAC_WIFI_STA);
-    sprintf(temp , MACSTR, MAC2STR(mac)); 
+    sprintf(temp , MACSTR, MAC2STR(mac));
+	duk_push_string(ctx, temp);
+	duk_put_prop_string(ctx, -2, "MAC"); // Add cpuid to new getState
+ 
+	sprintf(temp, "%02X%02X-%02X%02X", mac[2], mac[3], mac[4], mac[5] );
 	duk_push_string(ctx, temp);
 	duk_put_prop_string(ctx, -2, "cpuid"); // Add cpuid to new getState
 

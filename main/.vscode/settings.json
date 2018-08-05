@@ -25,6 +25,7 @@
         "queue": "cpp",
         "utility": "cpp",
         "locale": "c",
-        "istream": "cpp"
+        "istream": "cpp",
+        "__bit_reference": "cpp"
     }
 }

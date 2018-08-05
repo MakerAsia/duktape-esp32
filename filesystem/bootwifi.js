@@ -31,13 +31,14 @@ var URL  = require("url.js");
 var LED = require("led.js");
 var BUTTON = require("button.js");
 var LDR = require("ldr.js");
+//var LM73 = require("lm73.js");
 var Matrix = require("matrix.js");
 var Dweet = require("dweet.js");
 
 var _dweet = new Dweet();
-var _mtx = new Matrix();
 
-kidbright['matrix'] = _mtx;
+
+kidbright['matrix'] = new Matrix();
 kidbright['dweet'] = _dweet;
 kidbright['ledBT'] = new LED(17);
 kidbright['ledWIFI'] = new LED(2);
@@ -47,6 +48,7 @@ kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],
 kidbright['button1'] = new BUTTON(0);
 kidbright['button2'] = new BUTTON(1);
 kidbright['ldr'] = new LDR();
+//kidbright['temperature'] = new LM73();
 kidbright['delay'] = function( time ) {
 	DUKF.sleep(time);
 }
@@ -149,7 +151,7 @@ function becomeAccessPoint(bootedCallback) {
 		log("IP Address: " + WIFI.getState().apIp);
 		log("AP SSID: " + "esp32-"+cpuid);
 		
-		_mtx.printScroll( cpuid );
+		kidbright.matrix.printScroll( cpuid );
 		// and start a WebServer
 		startWebServer();
 		//bootedCallback();
@@ -203,7 +205,7 @@ function bootwifi(bootedCallback) {
 			} else {
 				log("Onwards ... we are now network connected!");
 				log("IP Address: " + WIFI.getState().staIp);
-				_mtx.printScroll( WIFI.getState().staIp )
+				kidbright.matrix.printScroll( WIFI.getState().staIp )
 				bootedCallback();
 			}
 			log("ESP32 Heap: " + ESP32.getState().heapSize);

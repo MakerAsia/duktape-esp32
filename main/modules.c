@@ -363,12 +363,11 @@ static duk_ret_t js_esp32_getState(duk_context *ctx) {
 	duk_push_int(ctx, spi_flash_get_chip_size());
 	duk_put_prop_string(ctx, -2, "flashSize"); // Add flashSize to new getState
 
-    uint8_t chipid[6];
+    uint8_t mac[6];
 	char temp[16];
-    esp_efuse_mac_get_default(chipid);
-	//esp_read_mac(chipid,0);
-    sprintf(temp,"%X",(unsigned int)chipid);
 
+	esp_read_mac(mac, ESP_MAC_WIFI_STA);
+    sprintf(temp , MACSTR, MAC2STR(mac)); 
 	duk_push_string(ctx, temp);
 	duk_put_prop_string(ctx, -2, "cpuid"); // Add cpuid to new getState
 

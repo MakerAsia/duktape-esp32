@@ -175,6 +175,13 @@ $(document).ready(function() {
 			} // Success
 		}); // .ajax
 	});
+
+	// Handle the stop script button.
+	$("#stopScript").button({
+		icon: "ui-icon-stop" // Set the icon on the button to be the trash can.
+	}).click(function() {
+		runScript("console.log('')");
+	});
 	
 	$("#saveSelect").change(function(event) {
 		$("#saveFileNameText").val($("#saveSelect option:selected").val());

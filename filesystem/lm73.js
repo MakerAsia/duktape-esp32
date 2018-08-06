@@ -1,5 +1,5 @@
 function lm73() {   
-	var I2C = require("i2c");
+	var I2C = require("i2c.js");
 	log("Constants:");
 	log("I2C_NUM_0: " + I2C.I2C_NUM_0);
 	log("I2C_NUM_1: " + I2C.I2C_NUM_1);
@@ -36,77 +36,32 @@ function lm73() {
 
 	var LM73_BIT_DAV_FLAG = 0x01;
 
-	// Set Resolution
-	i2c.beginTransaction(LM73_1_I2C_GND);
-	i2c.write(LM73_REG_CTRLSTATUS);
-	i2c.endTransaction();
-
-	i2c.beginTransaction(LM73_1_I2C_GND,false);
 	var data = new Buffer(1);
-	i2c.read(data);
-	i2c.endTransaction();
 
+	// Set Resolution
+	i2c._read(LM73_1_I2C_GND,LM73_REG_CTRLSTATUS,data)
 	data[0] = (data[0] & LM73_MASK_RESOLUTION) | LM73_RESOLUTION_12BIT;
-	i2c.beginTransaction(LM73_1_I2C_GND);
-	i2c.write(LM73_REG_CTRLSTATUS);
-	i2c.write(data);
-	i2c.endTransaction();
+	i2c._write(LM73_1_I2C_GND,LM73_REG_CTRLSTATUS,data);
 	
-	
-	// power off
-	i2c.beginTransaction(LM73_1_I2C_GND);
-	i2c.write(LM73_REG_CONFIG);
-	reg = i2c.endTransaction();
-
-	i2c.beginTransaction(LM73_1_I2C_GND,false);
-	i2c.read(data);
-	reg = i2c.endTransaction();
-
+	i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data)
 	data[0] = (data[0] & LM73_MASK_PD) | LM73_POWER_OFF;
-	i2c.beginTransaction(LM73_1_I2C_GND);
-	i2c.write(LM73_REG_CONFIG);
-	i2c.write(data);
-	i2c.endTransaction();
+	i2c._write(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
 	
 
     var ret = {
 		oneShot: function() {
-			i2c.beginTransaction(LM73_1_I2C_GND);
-			i2c.write(LM73_REG_CONFIG);
-			i2c.endTransaction();
-
-			i2c.beginTransaction(LM73_1_I2C_GND,false);
-			i2c.read(data);
-			i2c.endTransaction();
-
+			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
 			data[0] |= LM73_BIT_ONE_SHOT;
-			i2c.beginTransaction(LM73_1_I2C_GND);
-			i2c.write(LM73_REG_CONFIG);
-			i2c.write(data);
-			i2c.endTransaction();				
+			i2c._write(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
 		},
 		isReady: function() {
-			i2c.beginTransaction(LM73_1_I2C_GND);
-			i2c.write(LM73_REG_CONFIG);
-			i2c.endTransaction();
-
-			i2c.beginTransaction(LM73_1_I2C_GND,false);
-			i2c.read(data);
-			i2c.endTransaction();
-			
+			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data);			
 			data[0] = data[0] & LM73_BIT_DAV_FLAG;
-			log( "Ready: " + data[0] );
 			return data[0];
 		},
 		temperature: function() {
-			i2c.beginTransaction(LM73_1_I2C_GND);
-			i2c.write(LM73_REG_TEMPERATURE);
-			i2c.endTransaction();
-
 			var data2 = new Buffer(2);
-			i2c.beginTransaction(LM73_1_I2C_GND,false);
-			i2c.read(data2);
-			i2c.endTransaction();
+			i2c._read(LM73_1_I2C_GND,LM73_REG_TEMPERATURE,data2);
 			var ret = ((data2[0]<<8) | data2[1]) * 0.0078125;
 			return ret;
 		},

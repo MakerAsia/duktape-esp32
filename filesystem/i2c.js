@@ -65,7 +65,16 @@ var i2c_func = function(options) {
 			}
 			internalI2C.master_read(cmd, data, ack);
 		},
+
+		_read: function(address, reg, data) {
+			this.beginTransaction(address);
+			this.write(reg);
+			this.endTransaction();
 		
+			this.beginTransaction(address,false);
+			this.read(data,true);
+			this.endTransaction();			
+		},
 		//
 		// write
 		//
@@ -80,7 +89,14 @@ var i2c_func = function(options) {
 			} else {
 				internalI2C.master_write(cmd, data, ack);
 			}
-		} // write
+		}, // write
+
+		_write: function(address,reg,data) {
+			this.beginTransaction(address);
+			this.write(reg);
+			this.write(data);
+			this.endTransaction();
+		}
 	}; // return
 }; // i2c_func
 

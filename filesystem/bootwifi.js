@@ -63,6 +63,7 @@ kidbright['init'] = function() {
 	kidbright.ledIOT.off();
 	kidbright.matrix.stopScroll();
 	DUKF.gc();
+	log( ESP32.getState().heapSize );
 }
 
 /*

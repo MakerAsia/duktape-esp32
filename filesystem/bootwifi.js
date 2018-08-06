@@ -62,6 +62,7 @@ kidbright['init'] = function() {
 	kidbright.ledNTP.off();
 	kidbright.ledIOT.off();
 	kidbright.matrix.stopScroll();
+	DUKF.gc();
 }
 
 /*

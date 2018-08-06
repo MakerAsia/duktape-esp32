@@ -3,4 +3,5 @@ build/
 *.gz
 sdkconfig.old
 *.img
-components/*
+components/duktape/
+components/espfs

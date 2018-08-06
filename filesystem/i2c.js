@@ -31,6 +31,9 @@ var i2c_func = function(options) {
 	var cmd;
 	
 	return {
+		config: function( options ) {
+			internalI2C.param_config(options);
+		},
 		//
 		// beginTransaction
 		// address - I2C slave address

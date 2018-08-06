@@ -8,13 +8,14 @@ function lm73() {
 	log("I2C_MASTER_READ: " + I2C.I2C_MASTER_READ);
 	log("I2C_MASTER_WRITE: " + I2C.I2C_MASTER_WRITE);
 	
-	var i2c = new I2C({
+	var options = {
 		port: I2C.I2C_NUM_0,
 		mode: I2C.I2C_MODE_MASTER,
 		sda_pin: 4,
 		scl_pin: 5,
 		master_clk_speed: 100000
-	});
+	};
+	var i2c = new I2C(options);
 
 	var LM73_1_I2C_GND = 0x4D; // Ground
 	
@@ -66,6 +67,7 @@ function lm73() {
 			return ret;
 		},
 		read: function() {
+			i2c.config(options);
 			this.oneShot();
 			while( !this.isReady )
 				;

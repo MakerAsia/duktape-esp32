@@ -31,7 +31,7 @@ var URL  = require("url.js");
 var LED = require("led.js");
 var BUTTON = require("button.js");
 var LDR = require("ldr.js");
-//var LM73 = require("lm73.js");
+var LM73 = require("lm73.js");
 var Matrix = require("matrix.js");
 var Dweet = require("dweet.js");
 
@@ -48,7 +48,7 @@ kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],
 kidbright['button1'] = new BUTTON(0);
 kidbright['button2'] = new BUTTON(1);
 kidbright['ldr'] = new LDR();
-//kidbright['temperature'] = new LM73();
+kidbright['temperature'] = new LM73();
 kidbright['delay'] = function( time ) {
 	DUKF.sleep(time);
 }

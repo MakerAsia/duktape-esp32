@@ -1,9 +1,9 @@
-kidbright.ledIOT.on();
+kidbright.ledBT.on();
 kidbright.delay(1000);
-kidbright.ledIOT.off();
+kidbright.ledBT.off();
 kidbright.delay(1000);
 
-kidbright.ledIOT.on();
+kidbright.ledBT.on();
 kidbright.delay(1000);
-kidbright.ledIOT.off();
+kidbright.ledBT.off();
 kidbright.delay(1000);

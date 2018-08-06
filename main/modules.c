@@ -54,7 +54,7 @@ static duk_ret_t js_console_log(duk_context *ctx) {
 	LOGD(">> js_console_log called");
 	duk_safe_to_string(ctx, -1);
 	const char *message = duk_get_string(ctx, -1);
-	char t[256];
+	static char t[256];
 	sprintf( t, "%s\n", message );
 
 	// Let us now see if there is a console callback.  It will be

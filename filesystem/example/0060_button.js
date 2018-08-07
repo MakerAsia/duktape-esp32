@@ -1,11 +1,12 @@
 kidbright.init();
 
-setInterval(function() {
-    if( kidbright.button1.isPressed(0) ) {
+kidbright.loop( function() {
+    if( kidbright.button(0).isPressed() ) {
         kidbright.ledBT.on();
     }
     else {
         kidbright.ledBT.off();
     }
     kidbright.update();
-}, 100);
+});
+

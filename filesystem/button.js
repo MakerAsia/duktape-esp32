@@ -1,29 +1,27 @@
-var moduleButton = ESP32.getNativeFunction("ModuleButton");
-if (moduleButton === null) {
-	log("Unable to find ModuleButton");
-	module.exports = null;
-	return;
+function button(pinNumber) {
+    var GPIO = require("gpio.js");
+    var _gpio = new GPIO(pinNumber);
+    _gpio.setDirection(GPIO.INPUT); 
+    _gpio.setPullMode(GPIO.PULLUP_ONLY);
+    
+    var ret = {
+        gpio: _gpio,
+        pin: pinNumber,
+            //
+		// getLevel
+		// Get the current signal level of the GPIO.
+		//
+		read: function() {
+			return _gpio.getLevel();
+		}, // getLevel
+
+        isPressed: function() {
+            var p = _gpio.getLevel();
+            return( p == GPIO.LOW );
+        }, // getLevel
+        
+    }
+    return ret;
 }
 
-var internalButton = {};
-moduleButton(internalButton);
-
-function button( button_index ) {
-    internalButton.buttonInit();
-    var ret = {
-		isPressed: function() {
-            var b = internalButton.isPressed(button_index);
-            return b;
-		}, // getLevel
-		wasPressed: function() {
-            var b = internalButton.wasPressed(button_index);
-            return b;
-        },
-        read: function() {
-            internalButton.read(button_index);
-        }
-	}; // End ret
-	return ret;
-} // matrix
-
-module.exports = button;        
+module.exports = button;

@@ -1,7 +1,11 @@
 
 function kidbright() {
+    const __ledPin = [17,2,15,12];
+    const __btnPin = [16,14];
+
     var __loop = undefined;
-    var __ledBT = undefined;
+    var __led = [undefined, undefined, undefined, undefined];
+    var __btn = [undefined, undefined];
     var ret = {
         loop: function( loopCallback ) {
             __loop = loopCallback;
@@ -20,12 +24,31 @@ function kidbright() {
             log( ESP32.getState().heapSize );
             var _that = this;
         },
-        ledBT: function() {
-            if( __ledBT == undefined ) {
-                var LED = require("led.js");
-                __ledBT = new LED(17);
+        led: function( idx ) {
+            var LED = require("led.js");
+            if( __led[idx] == undefined ) {
+                __led[idx] = new LED(__ledPin[idx]);
             }
-            return __ledBT;
+            return __led[idx]
+        },
+        ledBT: function() {
+            return this.led(0);
+        },
+        ledWIFI: function() {
+            return this.led(1);
+        },
+        ledNTP: function() {
+            return this.led(2);
+        },
+        ledIOT: function() {
+            return this.led(3);
+        },
+        button: function( idx ) {
+            var BUTTON = require("button.js");
+            if( __btn[idx] == undefined ) {
+                __btn[idx] = new BUTTON(__btnPin[idx]);
+            }
+            return __btn[idx]            
         }
     }
     return ret;

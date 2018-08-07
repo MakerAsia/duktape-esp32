@@ -4,6 +4,32 @@
 $(document).ready(function() {
 	var consoleWS = null;
 	var settings;
+	window._kbxIde = { 
+		alive: true 
+	}
+	setInterval(function() {
+		if (_kbxIde.alive) {
+			$("#serverStatus").text("(connected)"); 
+		} 
+		else {
+			$("#serverStatus").text("(disconnected)"); 
+		}
+	}, 1000)
+	setInterval(function() { 
+		$.ajax({
+			url: "http://" + settings.esp32_host + "/heartbeat",
+			contentType: "application/javascript",
+			method: "GET",
+			success: function(data) {
+				_kbxIde.alive = true;
+				console.log("heap size = " + data)
+			},
+			error: function(err) {
+				_kbxIde.alive = false;
+			},
+			timeout: 3*1000,
+		}); // .ajax 
+	}, 10*1000);
 	
 	if (localStorage.settings) {
 		settings = JSON.parse(localStorage.settings);

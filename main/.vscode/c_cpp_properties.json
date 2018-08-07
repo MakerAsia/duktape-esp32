@@ -5,6 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/../components/**",
                 "${workspaceFolder}/../components/espfs", 
+                "${workspaceFolder}/../components/duktape/src", 
                 "${workspaceFolder}/**",
                 "~/esp/esp-idf/components/**"
             ],

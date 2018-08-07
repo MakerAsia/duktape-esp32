@@ -50,6 +50,7 @@ var KIDBRIGHT = require("kidbright.js");
 //kidbright['temperature'] = new LM73();
 
 kidbright = new KIDBRIGHT();
+kidbright.init();
 /*
  *  Start a WebServer on port 80.  The server will serve up the access point
  *  settings page that allows the user to supply the details of the access

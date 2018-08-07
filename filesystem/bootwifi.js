@@ -114,7 +114,12 @@ function startWebServer() {
 	      	bootWiFi_ns.close();
 	      	
 	      	response.writeHead(200);
-	      	response.write("Got data - rebooting in 5");
+			response.write("Got data - rebooting in 5");
+			kidbright.matrix.stopScroll();
+			kidbright.matrix.clear();
+			kidbright.matrix.setCursor(0, 0);
+			// TODO: make a longer message, smaller font.
+			kidbright.matrix.print("OK");
 	      	response.end();
 	      	// Reboot the ESP32 after 5 seconds.
 	      	setTimeout(function() {

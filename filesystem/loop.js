@@ -142,7 +142,8 @@ function loop() {
 			myData = null;
 		} // Data available and socket is NOT a server
 	} // For each socket that is able to read ... 
-	
+
+	kidbright.update();
 	// Garbage collection.
 	DUKF.gc();
 } // loop

@@ -1,9 +1,10 @@
-kidbright.ledBT.on();
-kidbright.delay(1000);
-kidbright.ledBT.off();
-kidbright.delay(1000);
+kidbright.init();
 
-kidbright.ledBT.on();
-kidbright.delay(1000);
-kidbright.ledBT.off();
-kidbright.delay(1000);
+var ledBT = kidbright.ledBT();
+
+kidbright.loop( function() {
+    ledBT.on();
+    kidbright.delay(1000);
+    ledBT.off();
+    kidbright.delay(1000);
+});

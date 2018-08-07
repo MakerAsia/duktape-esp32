@@ -52,6 +52,7 @@ var net = {
 			remoteAddress: null,
 			remotePort: null,
 			localPort: null,
+			_sockfd: sockfd,
 			
 			//
 			// write - Write data down the socket.  If we are using SSL, then write using the

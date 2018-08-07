@@ -28,44 +28,28 @@
 var NVS  = require("nvs.js");
 var HTTP = require("http.js");
 var URL  = require("url.js");
-var LED = require("led.js");
-var BUTTON = require("button.js");
-var LDR = require("ldr.js");
-var LM73 = require("lm73.js");
-var Matrix = require("matrix.js");
-var Dweet = require("dweet.js");
+var KIDBRIGHT = require("kidbright.js");
+//var LED = require("led.js");
+//var BUTTON = require("button.js");
+//var LDR = require("ldr.js");
+//var LM73 = require("lm73.js");
+//var Matrix = require("matrix.js");
+//var Dweet = require("dweet.js");
 
-var _dweet = new Dweet();
 
+//kidbright['matrix'] = new Matrix();
+//kidbright['dweet'] = new Dweet();
+//kidbright['ledBT'] = new LED(17);
+//kidbright['ledWIFI'] = new LED(2);
+//kidbright['ledNTP'] = new LED(15);
+//kidbright['ledIOT'] = new LED(12);
+//kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],kidbright['ledIOT']]
+//kidbright['button1'] = new BUTTON(0);
+//kidbright['button2'] = new BUTTON(1);
+//kidbright['ldr'] = new LDR();
+//kidbright['temperature'] = new LM73();
 
-kidbright['matrix'] = new Matrix();
-kidbright['dweet'] = _dweet;
-kidbright['ledBT'] = new LED(17);
-kidbright['ledWIFI'] = new LED(2);
-kidbright['ledNTP'] = new LED(15);
-kidbright['ledIOT'] = new LED(12);
-kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],kidbright['ledIOT']]
-kidbright['button1'] = new BUTTON(0);
-kidbright['button2'] = new BUTTON(1);
-kidbright['ldr'] = new LDR();
-kidbright['temperature'] = new LM73();
-kidbright['delay'] = function( time ) {
-	DUKF.sleep(time);
-}
-kidbright['update'] = function() {
-	kidbright.button1.read();
-	kidbright.button2.read();
-}
-kidbright['init'] = function() {
-	kidbright.ledBT.off();
-	kidbright.ledWIFI.off();
-	kidbright.ledNTP.off();
-	kidbright.ledIOT.off();
-	kidbright.matrix.stopScroll();
-	DUKF.gc();
-	log( ESP32.getState().heapSize );
-}
-
+kidbright = new KIDBRIGHT();
 /*
  *  Start a WebServer on port 80.  The server will serve up the access point
  *  settings page that allows the user to supply the details of the access
@@ -136,7 +120,7 @@ function startWebServer() {
 } // startWebServer 
 
 
-function becomeAccessPoint(bootedCallback) {
+function becomeAccessPoint(callback) {
 	var cpuid = ESP32.getState().cpuid;
 
 	log("Becoming an access point");
@@ -153,10 +137,12 @@ function becomeAccessPoint(bootedCallback) {
 		log("IP Address: " + WIFI.getState().apIp);
 		log("AP SSID: " + "esp32-"+cpuid);
 		
-		kidbright.matrix.printScroll( cpuid );
+		//kidbright.matrix.printScroll( cpuid );
 		// and start a WebServer
-		startWebServer();
+		//startWebServer();
 		//bootedCallback();
+		if( callback != undefined )
+			callback();
 	});
 } // becomeAccessPoint()
 
@@ -188,7 +174,7 @@ function bootwifi(bootedCallback) {
 	
 	log("Going to try and connect to AP named \"" +  ssid + "\"");
 	log("Network info is: ip=" + ip + ", gw=" + gw + ", netmask=" + netmask);
-	log("ESP32 Heap: " + ESP32.getState().heapSize);
+	log("ESP32 Heap (1): " + ESP32.getState().heapSize);
 	
 	WIFI.connect({
 		ssid: ssid,
@@ -200,21 +186,24 @@ function bootwifi(bootedCallback) {
 		}
 	}, function(err) {
 			log("Now connected as a station! - err: " + err);
+			log("ESP32 Heap (3): " + ESP32.getState().heapSize);
 			if (err !== null) {
-				log("Performing a stop of WiFi");
-				WIFI.stop();
-				becomeAccessPoint(bootedCallback);
+				//log("Performing a stop of WiFi");
+				//WIFI.stop();
+				becomeAccessPoint(startWebServer);
 			} else {
 				log("Onwards ... we are now network connected!");
 				log("IP Address: " + WIFI.getState().staIp);
-				kidbright.matrix.printScroll( WIFI.getState().staIp )
+				//kidbright.matrix.printScroll( WIFI.getState().staIp )
+				//becomeAccessPoint(bootedCallback);
+				//becomeAccessPoint(bootedCallback);
 				bootedCallback();
 			}
-			log("ESP32 Heap: " + ESP32.getState().heapSize);
+			log("ESP32 Heap (4): " + ESP32.getState().heapSize);
 		}
 	); // WIFI.connect
 	
-	log("ESP32 Heap: " + ESP32.getState().heapSize);
+	log("ESP32 Heap (2): " + ESP32.getState().heapSize);
 } // bootwifi()
 
 module.exports = bootwifi;

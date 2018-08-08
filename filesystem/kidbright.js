@@ -8,6 +8,7 @@ function kidbright() {
     var __btn = [undefined, undefined];
     var __ldr = undefined;
     var __lm73 = undefined;
+    var __matrix = undefined;
     var ret = {
         loop: function( loopCallback ) {
             __loop = loopCallback;
@@ -32,6 +33,8 @@ function kidbright() {
                 this.led(i).off();
                 log( "LED OFF " + i );
             }
+            this.matrix().stopScroll();
+            this.matrix().clear();
             DUKF.gc();
             log( ESP32.getState().heapSize );
         },
@@ -74,6 +77,13 @@ function kidbright() {
                 __lm73 = new LM73();
             }
             return __lm73;
+        },
+        matrix: function() {
+            var MATRIX = require("matrix.js");
+            if( __matrix == undefined ) {
+                __matrix = new MATRIX();
+            }
+            return __matrix;
         }
     }
     return ret;

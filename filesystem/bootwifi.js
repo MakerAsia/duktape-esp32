@@ -29,25 +29,6 @@ var NVS  = require("nvs.js");
 var HTTP = require("http.js");
 var URL  = require("url.js");
 var KIDBRIGHT = require("kidbright.js");
-//var LED = require("led.js");
-//var BUTTON = require("button.js");
-//var LDR = require("ldr.js");
-//var LM73 = require("lm73.js");
-//var Matrix = require("matrix.js");
-//var Dweet = require("dweet.js");
-
-
-//kidbright['matrix'] = new Matrix();
-//kidbright['dweet'] = new Dweet();
-//kidbright['ledBT'] = new LED(17);
-//kidbright['ledWIFI'] = new LED(2);
-//kidbright['ledNTP'] = new LED(15);
-//kidbright['ledIOT'] = new LED(12);
-//kidbright['led'] = [kidbright['ledBT'],kidbright['ledWIFI'],kidbright['ledNTP'],kidbright['ledIOT']]
-//kidbright['button1'] = new BUTTON(0);
-//kidbright['button2'] = new BUTTON(1);
-//kidbright['ldr'] = new LDR();
-//kidbright['temperature'] = new LM73();
 
 kidbright = new KIDBRIGHT();
 kidbright.init();
@@ -100,11 +81,11 @@ function startWebServer() {
 	      	
 	      	response.writeHead(200);
 			response.write("Got data - rebooting in 5");
-			kidbright.matrix.stopScroll();
-			kidbright.matrix.clear();
-			kidbright.matrix.setCursor(0, 0);
+			kidbright.matrix().stopScroll();
+			kidbright.matrix().clear();
+			kidbright.matrix().setCursor(0, 0);
 			// TODO: make a longer message, smaller font.
-			kidbright.matrix.print("OK");
+			kidbright.matrix().print("OK");
 	      	response.end();
 	      	// Reboot the ESP32 after 5 seconds.
 	      	setTimeout(function() {
@@ -143,7 +124,7 @@ function becomeAccessPoint(callback) {
 		log("IP Address: " + WIFI.getState().apIp);
 		log("AP SSID: " + "esp32-"+cpuid);
 		
-		//kidbright.matrix.printScroll( cpuid );
+		kidbright.matrix().printScroll( cpuid );
 		// and start a WebServer
 		//startWebServer();
 		//bootedCallback();
@@ -200,7 +181,7 @@ function bootwifi(bootedCallback) {
 			} else {
 				log("Onwards ... we are now network connected!");
 				log("IP Address: " + WIFI.getState().staIp);
-				//kidbright.matrix.printScroll( WIFI.getState().staIp )
+				kidbright.matrix().printScroll( WIFI.getState().staIp )
 				//becomeAccessPoint(bootedCallback);
 				//becomeAccessPoint(bootedCallback);
 				bootedCallback();

@@ -1,4 +1,6 @@
-kidbright.matrix.printScroll("MakerLAB by MakerAsia");
+kidbright.init();
+
+kidbright.matrix().printScroll("MakerLAB by MakerAsia");
 
 
 

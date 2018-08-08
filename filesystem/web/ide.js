@@ -15,7 +15,7 @@ $(document).ready(function() {
 			$("#serverStatus").text("(disconnected)"); 
 		}
 	}, 1000)
-	
+	/*
 	setInterval(function() { 
 		$.ajax({
 			url: "http://" + settings.esp32_host + "/heartbeat",
@@ -31,6 +31,7 @@ $(document).ready(function() {
 			timeout: 3*1000,
 		}); // .ajax 
 	}, 30*1000);
+	*/
 	
 	if (localStorage.settings) {
 		settings = JSON.parse(localStorage.settings);

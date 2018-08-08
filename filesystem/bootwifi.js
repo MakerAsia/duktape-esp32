@@ -181,9 +181,7 @@ function bootwifi(bootedCallback) {
 			} else {
 				log("Onwards ... we are now network connected!");
 				log("IP Address: " + WIFI.getState().staIp);
-				kidbright.matrix().printScroll( WIFI.getState().staIp )
-				//becomeAccessPoint(bootedCallback);
-				//becomeAccessPoint(bootedCallback);
+				//kidbright.matrix().printScroll( WIFI.getState().staIp )
 				bootedCallback();
 			}
 			log("ESP32 Heap (4): " + ESP32.getState().heapSize);

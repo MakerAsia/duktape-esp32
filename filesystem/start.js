@@ -1,6 +1,6 @@
 (function() {
 	
-var STOP_PIN = 13; 
+var STOP_PIN = 16; 
 /*
  *  Master start for Web IDE.   Here we run the bootwifi script to boot up the WiFi
  *  environment.  Then we load the ide_webserver and we are off and running.
@@ -12,6 +12,12 @@ function startIDE() {
 	ide_webserver();
 };
 
+function autoStart() {
+	if( !runStart() ) {
+		kidbright.matrix().printScroll( WIFI.getState().staIp )
+		startIDE();
+	}
+}
 
 /*
  * Determine if we should run a start program, what it should be and then
@@ -21,16 +27,18 @@ function runStart() {
 	var GPIO = require("gpio");
 	var stopPin = new GPIO(STOP_PIN);
 	stopPin.setDirection(GPIO.INPUT);
-	if (stopPin.getLevel()) {
+	stopPin.setPullMode(GPIO.PULLUP_ONLY);
+	if (stopPin.getLevel() == GPIO.LOW ) {
 		log("Start program bypassed by user.");
-		return;
+		return false;
 	}
+	log("Start program started.");
 	
 	var esp32duktapeNS = NVS.open("esp32duktape", "readwrite");
 	var startProgram = esp32duktapeNS.get("start", "string");
 	esp32duktapeNS.close();
 	if (startProgram !== null) {
-		log("Running start program: %s" + startProgram);
+		log("Running start program: " + startProgram);
 		var script = ESP32.loadFile("/spiffs" + startProgram);
 		if (script !== null) {
 			try {
@@ -39,10 +47,12 @@ function runStart() {
 			catch (e) {
 				log("Caught exception: " + e.stack);
 			}
+			return true;
 		} // We loaded the script
 	} else { // We have a program 
 		log("No start program");
 	}
+	return false;
 } // runStart
 
 
@@ -101,7 +111,7 @@ if (DUKF.OS == "ESP32") {
 		runStart();
 	} else {
 		var bootwifi = require("bootwifi.js");
-		bootwifi(startIDE);
+		bootwifi(autoStart);
 	}
 	esp32duktapeNS.close();
 } else {

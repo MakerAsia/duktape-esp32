@@ -92,6 +92,29 @@ function kidbright() {
                 __dweet = new DWEET();
             }
             return __dweet;
+        },
+        setAutoStart: function(path) {
+            var NVS = require("nvs");
+
+            var esp32duktapeNS = NVS.open("esp32duktape", "readwrite");
+            esp32duktapeNS.set("start", path, "string");
+            esp32duktapeNS.close();
+        },
+        getAutoStart: function(path) {
+            var NVS = require("nvs");
+
+            var esp32duktapeNS = NVS.open("esp32duktape", "readwrite");
+            var startProgram = esp32duktapeNS.get("start", "string");
+            esp32duktapeNS.close();
+
+            return startProgram;
+        },
+        clearAutoStart: function(path) {
+            var NVS = require("nvs");
+
+            var esp32duktapeNS = NVS.open("esp32duktape", "readwrite");
+            esp32duktapeNS.erase("start");
+            esp32duktapeNS.close();
         }
     }
     return ret;

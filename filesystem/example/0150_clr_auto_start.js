@@ -1,0 +1,4 @@
+kidbright.init();
+
+kidbright.clearAutoStart();
+

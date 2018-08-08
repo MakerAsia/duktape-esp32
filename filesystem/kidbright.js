@@ -14,6 +14,11 @@ function kidbright() {
             DUKF.sleep(time);
         },
         update: function() {
+            for( var i=0; i<2; i++ ) {
+                if( __btn[i] ) {
+                    __btn[i].read();
+                }
+            }
             if( __loop != undefined ) {
                 __loop();
             }

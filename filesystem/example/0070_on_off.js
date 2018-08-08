@@ -1,16 +1,15 @@
 kidbright.init();
 
 var state = 0;
-setInterval(function() {
-    
-    if( kidbright.button1.wasPressed() ) {
+kidbright.loop( function() {
+    if( kidbright.button(0).wasPressed() ) {
         state = !state;
     }
     if( state ) {
-        kidbright.ledBT.on();
+        kidbright.ledBT().on();
     }
     else {
-        kidbright.ledBT.off();
+        kidbright.ledBT().off();
     }
-    kidbright.update();
-}, 100);
+});
+    

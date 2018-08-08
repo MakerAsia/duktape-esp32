@@ -1,5 +1,5 @@
-var I2C = require("i2c");
-const ADDRESS = 0x34; 
+const I2C = require("i2c");
+const ADDRESS = 0x34;
 
 console.log("Constants:");
 console.log("I2C_NUM_0: " + I2C.I2C_NUM_0);
@@ -9,33 +9,37 @@ console.log("I2C_MODE_SLAVE: " + I2C.I2C_MODE_SLAVE);
 console.log("I2C_MASTER_READ: " + I2C.I2C_MASTER_READ);
 console.log("I2C_MASTER_WRITE: " + I2C.I2C_MASTER_WRITE);
 
-var i2cDevice = new I2C({
-    port: I2C.I2C_NUM_0,
-    mode: I2C.I2C_MODE_MASTER,
-    sda_pin: 4,
-    scl_pin: 5,
-    master_clk_speed: 100000
+const i2cDevice = new I2C({
+  port: I2C.I2C_NUM_0,
+  mode: I2C.I2C_MODE_MASTER,
+  sda_pin: 4,
+  scl_pin: 5,
+  master_clk_speed: 100000
 });
 
-i2cDevice.beginTransaction(ADDRESS); 
-var b = new Buffer(2)
-b[0] = 0x00;
-b[1] = 0x00;
-i2cDevice._write(ADDRESS, 0x20, b);
+i2cDevice.beginTransaction(ADDRESS);
+i2cDevice.write(0x20);
+i2cDevice.write(0x00);
+i2cDevice.write(0x00);
+i2cDevice.endTransaction();
 
-b[0] = 0xff;
-b[1] = 0xff;
-i2cDevice._write(ADDRESS, 0x21, b);
-i2cDevice._write(ADDRESS, 0x22, b);
+i2cDevice.beginTransaction(ADDRESS);
+i2cDevice.write(0x21);
+i2cDevice.write(0xff);
+i2cDevice.write(0xff);
+i2cDevice.endTransaction();
 
-setInterval(function() {
-    console.log("Free heap: " + ESP32.getState().heapSize);
-    b[0] = 0xff;
-    b[1] = 0xff;
-    i2cDevice._write(ADDRESS, 0x22, b);
-    setTimeout(function() {
-        b[0] ^= b[0];
-        b[1] ^= b[1];
-        i2cDevice._write(ADDRESS, 0x22, b);
-    }, 1000)
-}, 2000)
+kidbright.loop(function () {
+  i2cDevice.beginTransaction(ADDRESS);
+  i2cDevice.write(0x22);
+  i2cDevice.write(0xff);
+  i2cDevice.write(0xff);
+  i2cDevice.endTransaction();
+  kidbright.delay(1000);
+  i2cDevice.beginTransaction(ADDRESS);
+  i2cDevice.write(0x22);
+  i2cDevice.write(0x00);
+  i2cDevice.write(0x00);
+  i2cDevice.endTransaction();
+  kidbright.delay(1000);
+});

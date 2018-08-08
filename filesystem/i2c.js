@@ -56,6 +56,7 @@ var i2c_func = function(options) {
 			var rc = internalI2C.master_cmd_begin(options.port, cmd, 1000);
 			internalI2C.cmd_link_delete(cmd);
 			cmd = null;
+			DUKF.gc();
 			return rc;
 		}, // endTransaction
 		

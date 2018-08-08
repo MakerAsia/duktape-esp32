@@ -13,11 +13,19 @@ function consoleLogHTTP(obj) {
 
 function DWEET() {
     var ret = {
-        send: function( dweet_id, name, value ) {
+        send: function( dweet_id, values ) {
             DUKF.gc();
             var host = "dweet.io";
             var port = 80;
-            var path = "/dweet/for/"+dweet_id+"?"+name+"="+value;
+            var path = "/dweet/for/"+dweet_id+"?";
+            for (var key in values) {
+                // check if the property/key is defined in the object itself, not in parent
+                if (values.hasOwnProperty(key)) {           
+                    console.log(key, values[key]);
+                    path = path + key + "=" + values[key] + '&';
+                }
+            }
+            path = path.substr(0,path.length-1);
             
             var sock = new net.Socket();
             sock.connect({
@@ -36,6 +44,7 @@ function DWEET() {
                 log("Response data:");
                 log(data);
                 log("**************")
+                sock.end();
             });
             
             sock.on("end", function() {

@@ -38,6 +38,7 @@ function lm73() {
 	var LM73_BIT_DAV_FLAG = 0x01;
 
 	var data = new Buffer(1);
+	var data2 = new Buffer(2);
 
 	// Set Resolution
 	i2c._read(LM73_1_I2C_GND,LM73_REG_CTRLSTATUS,data)
@@ -61,7 +62,6 @@ function lm73() {
 			return data[0];
 		},
 		temperature: function() {
-			var data2 = new Buffer(2);
 			i2c._read(LM73_1_I2C_GND,LM73_REG_TEMPERATURE,data2);
 			var ret = ((data2[0]<<8) | data2[1]) * 0.0078125;
 			return ret;

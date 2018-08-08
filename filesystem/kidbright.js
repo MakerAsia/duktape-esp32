@@ -9,6 +9,7 @@ function kidbright() {
     var __ldr = undefined;
     var __lm73 = undefined;
     var __matrix = undefined;
+    var __dweet = undefined;
     var ret = {
         loop: function( loopCallback ) {
             __loop = loopCallback;
@@ -84,6 +85,13 @@ function kidbright() {
                 __matrix = new MATRIX();
             }
             return __matrix;
+        },
+        dweet: function() {
+            var DWEET = require("dweet.js");
+            if( __dweet == undefined ) {
+                __dweet = new DWEET();
+            }
+            return __dweet;
         }
     }
     return ret;

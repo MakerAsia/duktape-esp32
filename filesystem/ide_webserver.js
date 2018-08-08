@@ -15,7 +15,7 @@
 var http = require("http");
 var ws = require("ws");
 var FS = require("fs");
-
+var KIDBRIGHT = require("kidbright.js");
 
 var _firstHit = true;
 /**
@@ -107,6 +107,9 @@ function requestHandler(request, response) {
 			// request to run a script ...
 			log("We are about to run: " + postData);
 			clearIntervals();
+			kidbright = {};
+			DUKF.gc();
+			kidbright = new KIDBRIGHT();
 			kidbright.init();
 			try {
 				eval(postData);
@@ -120,6 +123,9 @@ function requestHandler(request, response) {
 		else if (pathParts[0] == "run" && request.method == "GET") {
 			if (pathParts.length > 1) {
 				clearIntervals();
+				kidbright = {};
+				DUKF.gc();
+				kidbright = new KIDBRIGHT();
 				kidbright.init();
 				fileName = "/" + pathParts.splice(1).join("/");
 				DUKF.runFile(fileName);

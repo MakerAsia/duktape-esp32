@@ -1,3 +1,5 @@
-setInterval(function() {
-	console.log("Value: " + kidbright.ldr.read());
-}, 1000);
+kidbright.init();
+
+setInterval( function() {
+	console.log("Value: " + kidbright.ldr().read());
+}, 5000);

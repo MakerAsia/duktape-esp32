@@ -6,6 +6,8 @@ function kidbright() {
     var __loop = undefined;
     var __led = [undefined, undefined, undefined, undefined];
     var __btn = [undefined, undefined];
+    var __ldr = undefined;
+    var __lm73 = undefined;
     var ret = {
         loop: function( loopCallback ) {
             __loop = loopCallback;
@@ -24,7 +26,7 @@ function kidbright() {
             }
         },
         init: function() {
-            log( "KIDBRIGHT INIT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
+            log( "KIDBRIGHT INIT" );
             __loop = undefined;
             for( var i=0; i<4; i++ ) {
                 this.led(i).off();
@@ -58,6 +60,20 @@ function kidbright() {
                 __btn[idx] = new BUTTON(__btnPin[idx]);
             }
             return __btn[idx]            
+        },
+        ldr: function() {
+            var LDR = require("ldr.js");
+            if( __ldr == undefined ) {
+                __ldr = new LDR();
+            }
+            return __ldr;
+        },
+        temperature: function() {
+            var LM73 = require("lm73.js");
+            if( __lm73 == undefined ) {
+                __lm73 = new LM73();
+            }
+            return __lm73;
         }
     }
     return ret;

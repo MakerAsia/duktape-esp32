@@ -348,6 +348,8 @@ $(document).ready(function() {
 					// Retrieve the content of a file from ESP32 file store.
 					// the REST request format is:
 					// GET /files/<fileName>
+					runScript("console.log('')");
+					
 					$.ajax({
 						url: "http://" + settings.esp32_host + "/files" + selectedFile,
 						method: "GET",

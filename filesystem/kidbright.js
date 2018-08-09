@@ -10,6 +10,7 @@ function kidbright() {
     var __lm73 = undefined;
     var __matrix = undefined;
     var __dweet = undefined;
+    var __buzzer = undefined;
     var ret = {
         loop: function( loopCallback ) {
             __loop = loopCallback;
@@ -90,6 +91,13 @@ function kidbright() {
                 __dweet = new DWEET();
             }
             return __dweet;
+        },
+        buzzer: function() {
+            var BUZZER = require("buzzer.js");
+            if( __buzzer == undefined ) {
+                __buzzer = new BUZZER(7,13)
+            }
+            return __buzzer;
         },
         setAutoStart: function(path) {
             var NVS = require("nvs");

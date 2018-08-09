@@ -143,7 +143,7 @@ function requestHandler(request, response) {
 			if (pathParts.length == 1 && request.method == "GET") {
 				var filesArray = FS.spiffsDir();
 				// var includeDirs = ["*"];
-				var includeDirs = ["example", "kbxio", "tests"];
+				var includeDirs = ["example", "kbxio", "tests", "*"];
 				filesArray = filesArray.filter(function(f) { 
 					var file = f.name.split("/");
 					var isDir = (file.length > 1);

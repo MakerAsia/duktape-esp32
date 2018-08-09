@@ -18,7 +18,7 @@ DUKF.sleep(500);
 display.setCursor(10, 10);
 display.setTextColor(Display.WHITE);
 display.setTextSize(1);
-display.drawString("Font 2 ABCabc 012345", 0, 0, 2);
+display.drawString("Font 2 ABCabc 012345", 0, 0, 1);
 
 DUKF.sleep(1000);
 display.drawRect(100, 100, 50, 50, Display.BLUE);

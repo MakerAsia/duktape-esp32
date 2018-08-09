@@ -16,4 +16,5 @@ setInterval(function() {
         "temperature": temp,
         "memory": mem
     });
+    DUKF.gc();
 }, 15000);

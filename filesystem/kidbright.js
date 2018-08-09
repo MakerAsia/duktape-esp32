@@ -28,11 +28,9 @@ function kidbright() {
             }
         },
         init: function() {
-            log( "KIDBRIGHT INIT" );
             __loop = undefined;
             for( var i=0; i<4; i++ ) {
                 this.led(i).off();
-                log( "LED OFF " + i );
             }
             this.matrix().stopScroll();
             this.matrix().clear();

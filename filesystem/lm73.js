@@ -52,12 +52,14 @@ function lm73() {
 
     var ret = {
 		oneShot: function() {
+			log( "read" );
 			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
-			data[0] |= LM73_BIT_ONE_SHOT;
+			data[0] = LM73_BIT_ONE_SHOT;
+			log( "write" );
 			i2c._write(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
 		},
 		isReady: function() {
-			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data);			
+			i2c._read(LM73_1_I2C_GND,LM73_REG_CTRLSTATUS,data);			
 			data[0] = data[0] & LM73_BIT_DAV_FLAG;
 			return data[0];
 		},
@@ -68,9 +70,12 @@ function lm73() {
 		},
 		read: function() {
 			i2c.config(options);
+			//while( !this.isReady )
+			//	;
+			//log( "one shot" );
 			this.oneShot();
-			while( !this.isReady )
-				;
+			//while( !this.isReady )
+			//	;
 			return this.temperature();
 		}
 	}	

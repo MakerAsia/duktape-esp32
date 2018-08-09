@@ -17,7 +17,7 @@ LOG_TAG("module_i2c");
  *   Defaults to I2C_MODE_MASTER.
  */
 static duk_ret_t js_i2c_driver_install(duk_context *ctx) {
-	LOGD(">> js_i2c_driver_install");
+	//LOGD(">> js_i2c_driver_install");
 	i2c_mode_t mode;
 	i2c_port_t port;
 	if (duk_get_prop_string(ctx, -1, "port") != 1) {
@@ -46,7 +46,7 @@ static duk_ret_t js_i2c_driver_install(duk_context *ctx) {
 	if (errRc != ESP_OK) {
 		LOGE("i2c_driver_install: %s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_driver_install");
+	//LOGD("<< js_i2c_driver_install");
 	return 0;
 } // js_i2c_driver_install
 
@@ -60,10 +60,10 @@ static duk_ret_t js_i2c_driver_install(duk_context *ctx) {
  * A JS Pointer
  */
 static duk_ret_t js_i2c_cmd_link_create(duk_context *ctx) {
-	LOGD(">> js_i2c_cmd_link_create");
+	//LOGD(">> js_i2c_cmd_link_create");
 	i2c_cmd_handle_t cmd_handle = i2c_cmd_link_create();
 	duk_push_pointer(ctx, cmd_handle);
-	LOGD("<< js_i2c_cmd_link_create");
+	//LOGD("<< js_i2c_cmd_link_create");
 	return 1;
 } // js_i2c_cmd_link_create
 
@@ -76,10 +76,10 @@ static duk_ret_t js_i2c_cmd_link_create(duk_context *ctx) {
  * N/A
  */
 static duk_ret_t js_i2c_cmd_link_delete(duk_context *ctx) {
-	LOGD(">> js_i2c_cmd_link_delete");
+	//LOGD(">> js_i2c_cmd_link_delete");
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -1);
 	i2c_cmd_link_delete(cmd_handle);
-	LOGD("<< js_i2c_cmd_link_delete");
+	//LOGD("<< js_i2c_cmd_link_delete");
 	return 0;
 } // js_i2c_cmd_link_delete
 
@@ -95,7 +95,7 @@ static duk_ret_t js_i2c_cmd_link_delete(duk_context *ctx) {
  * return 0 on success and not 0 on error
  */
 static duk_ret_t js_i2c_master_cmd_begin(duk_context *ctx) {
-	LOGD(">> js_i2c_master_cmd_begin");
+	//LOGD(">> js_i2c_master_cmd_begin");
 	i2c_port_t i2c_port = duk_get_int(ctx, -3);
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -2);
 	int delay = duk_get_int(ctx, -1);
@@ -133,7 +133,7 @@ static duk_ret_t js_i2c_master_read(duk_context *ctx) {
 	if (errRc != ESP_OK) {
 		LOGE("i2c_master_read: %s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_master_read");
+	//LOGD("<< js_i2c_master_read");
 	return 0;
 } // js_i2c_master_read_byte
 
@@ -142,13 +142,13 @@ static duk_ret_t js_i2c_master_read(duk_context *ctx) {
  * [0] - js pointer- cmd_handle
  */
 static duk_ret_t js_i2c_master_start(duk_context *ctx) {
-	LOGD(">> js_i2c_master_start");
+	//LOGD(">> js_i2c_master_start");
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -1);
 	esp_err_t errRc = i2c_master_start(cmd_handle);
 	if (errRc != ESP_OK) {
 		LOGE("i2c_master_start: %s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_master_start");
+	//LOGD("<< js_i2c_master_start");
 	return 0;
 } // js_i2c_master_start
 
@@ -157,13 +157,13 @@ static duk_ret_t js_i2c_master_start(duk_context *ctx) {
  * [0] - js pointer- cmd_handle
  */
 static duk_ret_t js_i2c_master_stop(duk_context *ctx) {
-	LOGD(">> js_i2c_master_stop");
+	//LOGD(">> js_i2c_master_stop");
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -1);
 	esp_err_t errRc = i2c_master_stop(cmd_handle);
 	if (errRc != ESP_OK) {
 		LOGE("Error: i2c_master_stop: esp_err_t=%s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_master_stop");
+	//LOGD("<< js_i2c_master_stop");
 	return 0;
 } // js_i2c_master_stop
 
@@ -180,16 +180,16 @@ static duk_ret_t js_i2c_master_write(duk_context *ctx) {
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -3);
 	data = duk_get_buffer_data(ctx, -2, &data_len);
 	bool ack_en = duk_get_boolean(ctx, -1);
-	LOGD(">> js_i2c_master_write: length=%d, ack=%d", data_len, ack_en);
-	int i;
-	for (i=0; i<data_len; i++) {
-		LOGD("- wrote: 0x%.2x", data[i]);
-	}
+	//LOGD(">> js_i2c_master_write: length=%d, ack=%d", data_len, ack_en);
+	//int i;
+	//for (i=0; i<data_len; i++) {
+	//	LOGD("- wrote: 0x%.2x", data[i]);
+	//}
 	esp_err_t errRc = i2c_master_write(cmd_handle, data, data_len, ack_en);
 	if (errRc != ESP_OK) {
 		LOGE("Error: i2c_master_write: esp_err_t=%s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_master_write");
+	//LOGD("<< js_i2c_master_write");
 	return 0;
 } // js_i2c_master_write
 
@@ -214,7 +214,7 @@ static duk_ret_t js_i2c_master_write_byte(duk_context *ctx) {
 	if (errRc != ESP_OK) {
 		LOGE("Error: i2c_master_write_byte: esp_err_t=%s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_master_write_byte");
+	//LOGD("<< js_i2c_master_write_byte");
 	return 0;
 } // js_i2c_master_write_byte
 
@@ -229,7 +229,7 @@ static duk_ret_t js_i2c_master_write_byte(duk_context *ctx) {
  */
 static duk_ret_t js_i2c_param_config(duk_context *ctx) {
 
-	LOGD(">> js_i2c_param_config");
+	//LOGD(">> js_i2c_param_config");
 	i2c_mode_t mode;
 	i2c_port_t port;
 	gpio_num_t sda_pin;
@@ -312,7 +312,7 @@ static duk_ret_t js_i2c_param_config(duk_context *ctx) {
 	if (errRc != ESP_OK) {
 		LOGE("Error: i2c_param_config: esp_err_t=%s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_param_config");
+	//LOGD("<< js_i2c_param_config");
 	return 0;
 } // js_i2c_param_config
 

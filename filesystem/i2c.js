@@ -56,7 +56,6 @@ var i2c_func = function(options) {
 			var rc = internalI2C.master_cmd_begin(options.port, cmd, 1000);
 			internalI2C.cmd_link_delete(cmd);
 			cmd = null;
-			DUKF.gc();
 			return rc;
 		}, // endTransaction
 		
@@ -74,7 +73,6 @@ var i2c_func = function(options) {
 			this.beginTransaction(address);
 			this.write(reg);
 			this.endTransaction();
-		
 			this.beginTransaction(address,false);
 			this.read(data,true);
 			this.endTransaction();			
@@ -98,6 +96,8 @@ var i2c_func = function(options) {
 		_write: function(address,reg,data) {
 			this.beginTransaction(address);
 			this.write(reg);
+			//this.endTransaction();
+			//this.beginTransaction(address);
 			this.write(data);
 			this.endTransaction();
 		}

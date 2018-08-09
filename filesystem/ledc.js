@@ -46,7 +46,15 @@ function ledc() {
 		setDuty: function(channel, value) {
 			internalLEDC.setDuty(channel, value);
 			internalLEDC.updateDuty(channel);
-		} // setDuty
+		}, // setDuty
+
+		//
+		// setDuty
+		//
+		setFreqency: function(channel, value) {
+			internalLEDC.setFrequency(channel, value);
+			internalLEDC.updateDuty(channel);
+		} // setDuty		
 	}; // End ret
 	return ret;	
 }; // ledc definition

@@ -1,28 +1,28 @@
 function buzzer(channel,gpio) {
     var LEDC = require("ledc");
-    var _pwm = new LEDC();
-    _pwm.configureTimer({
+    var _ledc = new LEDC();
+    var _channel = channel;
+    _ledc.configureTimer({
         bitSize: 12,
-        freq: 10000,
-        timer: 0
+        freq: 1000,
+        timer: 3
     });
-    _pwm.configureChannel({
-        channel:channel,
+    _ledc.configureChannel({
+        channel:_channel,
         duty: 0,	
         gpio: gpio,
-        timer: 0
+        timer: 3
     });
     
     var ret = {
-        pwm: _pwm,
-		tone: function( frequency ) {
-            _pwm.setDuty( channel, frequency * 4096/1000 ); 
+        ledc: _ledc,
+        channel: _channel,
+		tone: function( freq ) {
+            _ledc.setFreqency( 3, freq ); 
         }, // getLevel
-		tone: function( frequency, duration ) {
-            _pwm.setDuty( channel, frequency * 4096/1000 ); 
-            DUKF.sleep( duration );
-            _pwm.setDuty( channel, 0 ); 
-        }, // getLevel
+		volume: function( level ) {
+            _ledc.setDuty( this.channel, level ); 
+        }, // getLevel        
     }
     return ret;
 }

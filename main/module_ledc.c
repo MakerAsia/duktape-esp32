@@ -104,6 +104,29 @@ static duk_ret_t js_ledc_set_duty(duk_context *ctx) {
 	return 0;
 } // js_ledc_set_duty
 
+/*
+ * Set the duty value of the PWM freqency.
+ * [0] - channel
+ * [1] - duty
+ */
+static duk_ret_t js_ledc_set_frequency(duk_context *ctx) {
+//	LOGD(">> js_ledc_set_frequency");
+	esp_err_t errRc;
+	ledc_channel_t channel;
+	uint32_t freqency;
+	channel = duk_get_int(ctx, -2);
+	if (channel < 0 || channel >= LEDC_CHANNEL_MAX) {
+		duk_error(ctx, 1, "invalid channel");
+	}
+	freqency = duk_get_int(ctx, -1);
+	errRc = ledc_set_freq(LEDC_HIGH_SPEED_MODE, channel, freqency);
+	if (errRc != ESP_OK) {
+		LOGE("js_ledc_set_frequency: %s", esp32_errToString(errRc));
+	}
+//	LOGD("<< js_ledc_set_frequency");
+	return 0;
+} // js_ledc_set_frequency
+
 
 /*
  * [0] - options
@@ -188,6 +211,7 @@ duk_ret_t ModuleLEDC(duk_context *ctx) {
 
 	ADD_FUNCTION("configureChannel", js_ledc_channel_config, 1);
 	ADD_FUNCTION("setDuty",          js_ledc_set_duty,       2);
+	ADD_FUNCTION("setFrequency",     js_ledc_set_frequency,  2);
 	ADD_FUNCTION("configureTimer",   js_ledc_timer_config,   1);
 	ADD_FUNCTION("updateDuty",       js_ledc_update_duty,    1);
 

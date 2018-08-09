@@ -1,28 +1,14 @@
-var LEDC = require("ledc");
-var _pwm = new LEDC();
-var channel = 0;
-var gpio = 13;
-_pwm.configureTimer({
-    bitSize: 12,
-    freq: 10000,
-    timer: 0
-});
-_pwm.configureChannel({
-    channel:channel,
-    duty: 0,	
-    gpio: gpio,
-    timer: 0
-});
+var BUZZER = require("buzzer");
 
-function tone( frequency ) {
-    _pwm.setDuty( channel, frequency * 10000/1000 ); 
-} // getLevel
-function tone( frequency, duration ) {
-    _pwm.setDuty( channel, frequency * 10000/1000 ); 
-    DUKF.sleep( duration );
-    _pwm.setDuty( channel, 0 ); 
-} // getLevel
+kidbright.init();
 
-for( var i=0; i<30; i++ ) {
-    tone( 294 );    
+
+const Note = [ 294, 330, 350, 393, 441, 495, 556, 587 ];
+
+var buzzer = new BUZZER(7,13);
+for( var l=0; l<8; l+=1 ) {
+    buzzer.tone( Note[l] );
+    buzzer.volume( 90 );
+    kidbright.delay( 200 );
+    buzzer.volume( 0 );
 }

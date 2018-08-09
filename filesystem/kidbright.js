@@ -95,7 +95,7 @@ function kidbright() {
         buzzer: function() {
             var BUZZER = require("buzzer.js");
             if( __buzzer == undefined ) {
-                __buzzer = new BUZZER(7,13)
+                __buzzer = new BUZZER(3,13)
             }
             return __buzzer;
         },

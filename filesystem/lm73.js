@@ -45,12 +45,23 @@ function lm73() {
 	data[0] = (data[0] & LM73_MASK_RESOLUTION) | LM73_RESOLUTION_12BIT;
 	i2c._write(LM73_1_I2C_GND,LM73_REG_CTRLSTATUS,data);
 	
+	
 	i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data)
-	data[0] = (data[0] & LM73_MASK_PD) | LM73_POWER_OFF;
+	data[0] = (data[0] & LM73_MASK_PD) | LM73_POWER_ON;
 	i2c._write(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
 	
 
     var ret = {
+		powerON: function() {
+			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data)
+			data[0] = (data[0] & LM73_MASK_PD) | LM73_POWER_ON;
+			i2c._write(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
+		},
+		powerOFF: function() {
+			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data)
+			data[0] = (data[0] & LM73_MASK_PD) | LM73_POWER_OFF;
+			i2c._write(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
+		},
 		oneShot: function() {
 			log( "read" );
 			i2c._read(LM73_1_I2C_GND,LM73_REG_CONFIG,data);
@@ -61,6 +72,7 @@ function lm73() {
 		isReady: function() {
 			i2c._read(LM73_1_I2C_GND,LM73_REG_CTRLSTATUS,data);			
 			data[0] = data[0] & LM73_BIT_DAV_FLAG;
+			log( "READY: " + data[0] );
 			return data[0];
 		},
 		temperature: function() {
@@ -69,14 +81,19 @@ function lm73() {
 			return ret;
 		},
 		read: function() {
+			//this.powerON();
 			i2c.config(options);
-			//while( !this.isReady )
+			//while( !this.isReady() )
 			//	;
 			//log( "one shot" );
+			this.isReady();
 			this.oneShot();
-			//while( !this.isReady )
+			this.isReady();
+			//while( !this.isReady() )
 			//	;
-			return this.temperature();
+			var ret = this.temperature();
+			//this.powerOFF();
+			return ret;
 		}
 	}	
     return ret;	

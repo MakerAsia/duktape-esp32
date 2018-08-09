@@ -155,7 +155,7 @@ function bootwifi(bootedCallback) {
 	
 	if (ssid === null || ssid.length === 0 || password === null || ip === null ||
 			gw === null || netmask === null) {
-		becomeAccessPoint(bootedCallback);
+		becomeAccessPoint(startWebServer);
 		return;
 	}
 	

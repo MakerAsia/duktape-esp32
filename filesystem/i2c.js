@@ -71,7 +71,7 @@ var i2c_func = function(options) {
 
 		_read: function(address, reg, data) {
 			this.beginTransaction(address);
-			this.write(reg);
+			this.write(reg,true);
 			this.endTransaction();
 			this.beginTransaction(address,false);
 			this.read(data,true);
@@ -95,10 +95,10 @@ var i2c_func = function(options) {
 
 		_write: function(address,reg,data) {
 			this.beginTransaction(address);
-			this.write(reg);
+			this.write(reg,true);
 			//this.endTransaction();
 			//this.beginTransaction(address);
-			this.write(data);
+			this.write(data,true);
 			this.endTransaction();
 		}
 	}; // return

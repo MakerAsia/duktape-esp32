@@ -15,6 +15,7 @@ function kidbright() {
 
     var ret = {
         DISPLAY: undefined,
+        MATRIX: undefined,
         loop: function( loopCallback ) {
             __loop = loopCallback;
         },
@@ -42,8 +43,8 @@ function kidbright() {
             log( ESP32.getState().heapSize );
         },
         led: function( idx ) {
-            var LED = require("led.js");
             if( __led[idx] == undefined ) {
+                var LED = require("led.js");
                 __led[idx] = new LED(__ledPin[idx]);
             }
             return __led[idx]
@@ -82,9 +83,9 @@ function kidbright() {
             return __lm73;
         },
         matrix: function() {
-            var MATRIX = require("matrix.js");
             if( __matrix == undefined ) {
-                __matrix = new MATRIX();
+                this.MATRIX = require("matrix.js");
+                __matrix = new this.MATRIX();
             }
             return __matrix;
         },

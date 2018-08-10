@@ -22,7 +22,7 @@ console.log( ESP32.getState().heapSize);
 display.setCursor(10, 10);
 display.setTextColor(Display.WHITE);
 display.setTextSize(1);
-display.drawString("Font 2 ABCabc 012345", 0, 0, 1);
+display.drawString("Font 1 ABCabc 012345", 0, 0, 1);
 
 console.log( ESP32.getState().heapSize);
 

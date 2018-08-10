@@ -81,12 +81,9 @@ function lm73() {
 			return ret;
 		},
 		read: function() {
-			//this.powerON();
-			i2c.config(options);
-			//while( !this.isReady() )
-			//	;
-			//log( "one shot" );
-			this.isReady();
+			//i2c.config(options);
+
+			//this.isReady();
 			this.oneShot();
 			this.isReady();
 			//while( !this.isReady() )

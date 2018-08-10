@@ -108,7 +108,8 @@ static duk_ret_t js_i2c_master_cmd_begin(duk_context *ctx) {
 	return 1;
 } // js_i2c_master_cmd_begin
 
-
+#define ACK_VAL                            0x0              /*!< I2C ack value */
+#define NACK_VAL                           0x1              /*!< I2C nack value */
 /*
  * [0] - js pointer- cmd_handle
  * [1] - Data buffer
@@ -129,7 +130,15 @@ static duk_ret_t js_i2c_master_read(duk_context *ctx) {
 // Note: This API does not ACTUALLY read the data from I2C ... it only
 // queues the request to subsequently read the data.  We can't use the data
 // until after the command has been executed with cmd_begin().
-	esp_err_t errRc = i2c_master_read(cmd_handle, data, data_len, !ack);
+	
+	//esp_err_t errRc = i2c_master_read(cmd_handle, data, data_len, !ack);
+
+	// Jimmy's note -- fixed the ACK manage for multi-byte read.
+    if (data_len > 1) {
+        i2c_master_read(cmd_handle, data, data_len - 1, ACK_VAL);
+    }
+    esp_err_t errRc = i2c_master_read_byte(cmd_handle, data + data_len - 1, NACK_VAL);
+
 	if (errRc != ESP_OK) {
 		LOGE("i2c_master_read: %s", esp32_errToString(errRc));
 	}

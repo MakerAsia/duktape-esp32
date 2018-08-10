@@ -9,18 +9,18 @@ $(document).ready(function() {
 		isFsDirty: true,
 		fsCachedData: [],
 		setFsDirty: function(status) {
-			_kbxIde.isFsDirty = status
+			_kbxIde.isFsDirty = status;
 		}
-	}
+	};
+
 	setInterval(function() {
-		console.log('fs status =', _kbxIde.isFsDirty)
 		if (_kbxIde.alive) {
 			$("#serverStatus").text("(connected)");
 		}
 		else {
 			$("#serverStatus").text("(disconnected)");
 		}
-	}, 1000)
+	}, 1000);
 	/*
 	setInterval(function() { 
 		$.ajax({
@@ -45,7 +45,7 @@ $(document).ready(function() {
 		var settings = {
 			esp32_host: location.host,
 			theme: "eclipse"
-		}
+		};
 	}
 
 	/*
@@ -76,7 +76,6 @@ $(document).ready(function() {
 		}); // .ajax
 	} // runScript
 
-
 	/**
 	 * Connect to the ESP32 for the console websocket.
 	 * @param onOpen A callback function to be invoked when the socket has been established.
@@ -88,19 +87,19 @@ $(document).ready(function() {
 		consoleWS.onmessage = function(event) {
 			console.log("WS message received!");
 			$("#console").val($("#console").val() + event.data);
-			$('#console').scrollTop($('#console')[0].scrollHeight);
-		}
+			$("#console").scrollTop($("#console")[0].scrollHeight);
+		};
 		consoleWS.onclose = function() {
 			$("#newWebSocket").button("enable");
 			$("#console").prop("disabled", true);
 			consoleWS = null;
-		}
+		};
 		consoleWS.onopen = function() {
 			$("#console").prop("disabled", false);
 			if (onOpen != null) {
 				onOpen();
 			}
-		}
+		};
 	} // createConsoleWebSocket
 
 	/**
@@ -123,30 +122,30 @@ $(document).ready(function() {
 				return 0;
 			});
 			$(selectObj).empty();
-			for (var i=0; i<data.length; i++) {
+			for (var i = 0; i < data.length; i++) {
 				$(selectObj).append($("<option>", {value: data[i].name, text: data[i].name}));
 			}
 			if (callback) {
 				callback();
 			}
 		}
+
 		if (_kbxIde.isFsDirty) {
 			$.ajax({
 				url: "http://" + settings.esp32_host + "/files",
 				method: "GET",
 				dataType: "json",
 				success: function(data) {
-					_kbxIde.fsCachedData = data.slice(0)
-					_kbxIde.setFsDirty(false)
-					showPopup(data, callback)
+					_kbxIde.fsCachedData = data.slice(0);
+					_kbxIde.setFsDirty(false);
+					showPopup(data, callback);
 				} // Success
 			}); // .ajax
 		}
 		else {
-				showPopup(_kbxIde.fsCachedData, callback)
+			showPopup(_kbxIde.fsCachedData, callback);
 		}
 	} // populateSelectWithFiles
-
 
 	// Create the page layout.
 	$("#c1").layout({
@@ -185,7 +184,6 @@ $(document).ready(function() {
 			});
 		}
 	});
-
 
 	$("#consoleCheckbox").checkboxradio().change(function() {
 		//console.log("Checkbox change: " + isConsoleEnabled());
@@ -227,8 +225,28 @@ $(document).ready(function() {
 		runScript("console.log('')");
 	});
 
+	// Handle the save as autostart program
+	$("#saveAsAutoStart").button({
+		// icon: "ui-icon-save"
+	}).click(function() {
+		populateSelectWithFiles($("#saveSelect"), function() {
+			$("#saveFileNameText").val("");
+			$("#saveDialog").dialog("open");
+		});
+	});
+
 	$("#saveSelect").change(function(event) {
-		$("#saveFileNameText").val($("#saveSelect option:selected").val());
+		$.ajax({
+			url: "http://" + settings.esp32_host + "/files",
+			method: "GET",
+			dataType: "json",
+			success: function(data) {
+				populateSelectWithFiles($("#saveSelect"), function() {
+					$("#saveFileNameText").val("");
+					$("#saveDialog").dialog("open");
+				});
+			} // Success
+		}); // .ajax
 	});
 
 	/**
@@ -259,7 +277,7 @@ $(document).ready(function() {
 		$("#settingsDialog").dialog("open");
 	});
 
-	$("#info").click(function(){
+	$("#info").click(function() {
 		console.log("Info!");
 		open("https://github.com/nkolban/duktape-esp32");
 	});
@@ -289,7 +307,7 @@ $(document).ready(function() {
 						return; // No file name entered.
 					}
 
-					if (selectedFile.charAt(0) != '/') { // File must start with a "/".  Add it if not present.
+					if (selectedFile.charAt(0) != "/") { // File must start with a "/".  Add it if not present.
 						selectedFile = "/" + selectedFile;
 					}
 
@@ -301,7 +319,7 @@ $(document).ready(function() {
 						method: "POST",
 						data: editor.getValue(),
 						success: function(data) {
-							_kbxIde.setFsDirty(true)
+							_kbxIde.setFsDirty(true);
 							$("#saveDialog").dialog("close");
 						}
 					}); // .ajax
@@ -315,7 +333,6 @@ $(document).ready(function() {
 			}
 		]
 	}); // #saveDialog
-
 
 	// Create and handle the load file dialog
 	$("#loadDialog").dialog({

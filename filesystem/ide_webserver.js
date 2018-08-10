@@ -160,14 +160,14 @@ function requestHandler(request, response) {
 				else if (request.method == "POST") {
 					log("Writing to file " + fileName);
 					log("Data: " + postData);
-					if (request.query.indexOf("autoStart") > -1) {
+					saveFile(DUKF.FILE_SYSTEM_ROOT + fileName, postData);
+					log(DUKF.FILE_SYSTEM_ROOT + fileName);
+					if (request.query &&  request.query.indexOf("autoStart") > -1) {
 						kidbright.setAutoStart(fileName);
 					}
 					else {
 						kidbright.clearAutoStart();
 					}
-					// kidbright.clearAutoStart()
-					saveFile(DUKF.FILE_SYSTEM_ROOT + fileName, postData);
 				}
 			}
 		} else {

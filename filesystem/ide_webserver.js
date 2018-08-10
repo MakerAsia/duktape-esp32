@@ -1,14 +1,14 @@
 /**
  * Provide a built-in WebServer used to service Duktape commands.  Primarily
  * a REST service provider.  The following are exposed:
- * 
+ *
  * POST /run - Execute the JavaScript code supplied in the POST data.
  * GET  /run/<name> - Execute the contents of the file named.
  * GET  /files - Return a JSON encoded list of files.
  * GET  /files/<name> - Return the contents of the named file.
  * POST /files/<name> - Save the content of the POST data in the named file.
  * GET  /<other> - Return the contents of the path as a regular WebServer.
- * 
+ *
  */
 /* globals require, FS, Buffer, log, DUKF, module*/
 
@@ -18,6 +18,7 @@ var FS = require("fs");
 var KIDBRIGHT = require("kidbright.js");
 
 var _firstHit = true;
+
 /**
  * Read a file from the SPIFFS file system and send it to the output stream.
  * @param fileName The name of the file to read.
@@ -41,7 +42,6 @@ function streamFile(fileName, response) {
 	return 0;
 } // streamFile
 
-
 /**
  * Save the data as a local file.
  * @param fileName The file name to create.
@@ -54,7 +54,6 @@ function saveFile(fileName, data) {
 	FS.closeSync(fd);
 } // saveFile
 
-
 function requestHandler(request, response) {
 	log("IDE_WebServer: We have received a new HTTP client request!");
 	DUKF.logHeap("requestHandler");
@@ -64,18 +63,18 @@ function requestHandler(request, response) {
 		kidbright.init();
 		_firstHit = false;
 	}
-	request.on("data", function (data) {
+	request.on("data", function(data) {
 		log("HTTP Request on(data) passed: " + data);
 		postData += data;
 	}); // on("data")
 
-	request.on("end", function () {
+	request.on("end", function() {
 		function sendFile(fileToSend) {
 			try {
 				fileName = DUKF.FILE_SYSTEM_ROOT + fileToSend;
 				log("File to read: " + fileName);
-				if (fileName === '/spiffs/') {
-					fileName = '/spiffs/index.html';
+				if (fileName === "/spiffs/") {
+					fileName = "/spiffs/index.html";
 				}
 				FS.statSync(fileName); // Will throw an error if file is not present
 				log("Loading file: " + fileName);
@@ -134,8 +133,8 @@ function requestHandler(request, response) {
 		}
 		else if (pathParts[0] == "heartbeat") {
 			response.writeHead(200);
-			response.write(""+ESP32.getState().heapSize);
-		} 
+			response.write("" + ESP32.getState().heapSize);
+		}
 		else if (pathParts[0] == "files") {
 			response.writeHead(200);
 			// Process files here ...
@@ -144,11 +143,11 @@ function requestHandler(request, response) {
 				var filesArray = FS.spiffsDir();
 				// var includeDirs = ["*"];
 				var includeDirs = ["example", "kbxio", "tests", "*"];
-				filesArray = filesArray.filter(function(f) { 
+				filesArray = filesArray.filter(function(f) {
 					var file = f.name.split("/");
 					var isDir = (file.length > 1);
 					var isIncludeAll = includeDirs.indexOf("*") > -1;
-					var isInclude = includeDirs.indexOf(file[0]) > -1; 
+					var isInclude = includeDirs.indexOf(file[0]) > -1;
 					return (isDir && isInclude) || isIncludeAll;
 				});
 				response.write(JSON.stringify(filesArray));
@@ -162,6 +161,13 @@ function requestHandler(request, response) {
 					log("Writing to file " + fileName);
 					log("Data: " + postData);
 					saveFile(DUKF.FILE_SYSTEM_ROOT + fileName, postData);
+					log(DUKF.FILE_SYSTEM_ROOT + fileName);
+					if (request.query &&  request.query.indexOf("autoStart") > -1) {
+						kidbright.setAutoStart(fileName);
+					}
+					else {
+						kidbright.clearAutoStart();
+					}
 				}
 			}
 		} else {
@@ -171,7 +177,6 @@ function requestHandler(request, response) {
 		response.end();
 	}); // on("end")
 } // requestHandler
-
 
 /**
  * Start being an IDE
@@ -186,25 +191,24 @@ function startIde() {
 	server.listen(WEBSERVER_PORT);
 	log("IDE_WebServer listening on port " + WEBSERVER_PORT);
 
-
 	if (ws !== null) {
 		var webSocketServer = ws.Server();
 
-		webSocketServer.on("connection", function (wsConnection) {
+		webSocketServer.on("connection", function(wsConnection) {
 			log("We have received a new WebSocket connection.  The path is \"" + wsConnection.path + "\"");
-			wsConnection.on("message", function (data) {
+			wsConnection.on("message", function(data) {
 				log("We have received an incoming message: " + data);
 				wsConnection.close();
 			});
 
-			wsConnection.on("close", function () {
+			wsConnection.on("close", function() {
 				log("Web Socket connection closed, ending handler!");
 				console.handler = null;
 			});
 
 			// Register a console.log() handler that will send the logged message to
 			// the WebSocket.
-			console.handler = function (message) {
+			console.handler = function(message) {
 				log("Sending to WS");
 				wsConnection.send(message);
 			};

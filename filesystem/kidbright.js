@@ -66,7 +66,7 @@ function kidbright() {
             if( __btn[idx] == undefined ) {
                 __btn[idx] = new BUTTON(__btnPin[idx]);
             }
-            return __btn[idx]            
+            return __btn[idx]
         },
         ldr: function() {
             var LDR = require("ldr.js");
@@ -121,8 +121,8 @@ function kidbright() {
         },
         clearAutoStart: function(path) {
             var NVS = require("nvs");
-
             var esp32duktapeNS = NVS.open("esp32duktape", "readwrite");
+            esp32duktapeNS.set("start", "being deleted", "string");
             esp32duktapeNS.erase("start");
             esp32duktapeNS.close();
         },

@@ -10,63 +10,69 @@ Neil Kolban, 2016
  -->
 <html lang="en">
 <head>
-<title>Kidbright.js</title>
-<style>
-#editor {
-	width: 100%;
-	height: 95%;
-	border-style: solid;
-	border-width: 1px;
-	border-color: black;
-}
-.console {
-	font-family: monospace;
-	margin-top: 4px;
-	width: 100%;
-	resize: none;
-}
+	<title>Kidbright.js</title>
+	<style>
+		#editor {
+			width: 100%;
+			height: 95%;
+			border-style: solid;
+			border-width: 1px;
+			border-color: black;
+		}
 
-.eval {
-	font-family: monospace;
-	resize: none;
-	flex-grow: 1;
-	margin-right: 5px;
-	padding: 4px;
-}
+		.console {
+			font-family: monospace;
+			margin-top: 4px;
+			width: 100%;
+			resize: none;
+		}
 
-.saveText {
-	resize: none;
-	flex-grow: 1;
-}
+		.eval {
+			font-family: monospace;
+			resize: none;
+			flex-grow: 1;
+			margin-right: 5px;
+			padding: 4px;
+		}
 
-.bottomBar {
-	margin-bottom: 4px;
-	margin-top: 4px;
-	margin-left:2px;
-	margin-right: 2px;
-	background-color: #303030;
-	padding: 8px;
-	border-radius: 10px;
-}
+		.saveText {
+			resize: none;
+			flex-grow: 1;
+		}
 
-body {
-	margin: 0px;
-}
+		.bottomBar {
+			margin-bottom: 4px;
+			margin-top: 4px;
+			margin-left: 2px;
+			margin-right: 2px;
+			background-color: #303030;
+			padding: 8px;
+			border-radius: 10px;
+		}
 
-html {
-	height: 100%;
-}
-</style>
-<!-- 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
--->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/layout-default.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/jquery.layout.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="ide.js"></script>
+		body {
+			margin: 0px;
+		}
+
+		html {
+			height: 100%;
+		}
+		#c1 span.ui-checkboxradio-icon {
+			background-color: yellow;
+		}
+	</style>
+	<!--
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<link rel="stylesheet"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/layout-default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-layout/1.4.3/jquery.layout.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js" type="text/javascript"
+			charset="utf-8"></script>
+	<script src="ide.js"></script>
 
 </head>
 <body style="height: 100%;">
@@ -74,8 +80,8 @@ html {
 
 <div style="display:flex; flex-direction: column; height: 100%;">
 	<div class="bottomBar" style="color: white; font-size: large; display: flex;">
-	<span style="flex-grow: 1;">Kidbright.js </span>
-	<!--<span id="info">Info <i id="serverStatus">connected</i></span>-->
+		<span style="flex-grow: 1;">Kidbright.js </span>
+		<!--<span id="info">Info <i id="serverStatus">connected</i></span>-->
 	</div>
 	<div id="c1" style="width: 100%; flex-grow: 1;">
 		<div class="ui-layout-center">
@@ -86,7 +92,8 @@ html {
 				<div style="display: flex; align-items: flex-end;">
 					<span style="flex-grow: 1;">Console:</span>
 					<label for="consoleCheckbox">Enabled:</label>
-					<input type="checkbox" id="consoleCheckbox" title="Enable/Disable console stream" style="color:yellow;">
+					<input type="checkbox" id="consoleCheckbox" title="Enable/Disable console stream"
+						   style="background-color:yellow;">
 				</div>
 
 				<textarea readonly disabled id="console" class="console" style="flex-grow:1;"></textarea>
@@ -106,8 +113,11 @@ html {
 		<button id="stopScript" title="Stop the running script">STOP</button>
 		<button id="clearConsole" title="Clear the console">Clear</button>
 		<button id="settings" title="Open the settings dialog">Settings</button>
-		<button id="save" title="Save the current file">Save</button>
 		<button id="load" title="Load a file">Load</button>
+		<button id="save" title="Save the current file">Save</button>
+		<button id="saveAsAutoStart" title="Save the current file and be executed when system starts.">Save as
+			AutoStart
+		</button>
 	</div>
 </div>
 
@@ -155,40 +165,41 @@ Define the settings dialog format.
 		<tr>
 			<td>Theme:</td>
 			<td><select id="theme">
-			<option value="ambiance">Ambiance</option>
-			<option value="chaos">Chaos</option>
-			<option value="chrome">Chrome</option>
-			<option value="clouds">Clouds</option>
-			<option value="clouds_midnight">Clouds Midnight</option>
-			<option value="cobalt">Cobalt</option>
-			<option value="crimson_editor">Crimson Editor</option>	
-			<option value="dawn">Dawn</option>	
-			<option value="dreamweaver">Dreamweaver</option>	
-			<option value="eclipse">Eclipse</option>	
-			<option value="github">Github</option>
-			<option value="idle_fingers">Idle Fingers</option>		
-			<option value="iplastic">Iplastic</option>		
-			<option value="katzenmilch">Katzenmilch</option>	
-			<option value="kr_theme">KR Theme</option>		
-			<option value="kurior">Kurior</option>		
-			<option value="merbivore">Merbivore</option>
-			<option value="merbivore_soft">Merbivore Soft</option>		
-			<option value="mono_industrial">Mono Industrial</option>		
-			<option value="monokai">Monokai</option>
-			<option value="pastel_on_dark">Pastel On Dark</option>		
-			<option value="solarized_dark">Solarized Dark</option>		
-			<option value="solarized_light">Solarized Light</option>																																												<option value="github">Github</option>		
-			<option value="sqlserver">Sqlserver</option>		
-			<option value="terminal">Terminal</option>
-			<option value="textmate">Textmate</option>		
-			<option value="tomorrow">Tomorrow</option>
-			<option value="tomorrow_night">Tomorrow Night</option>		
-			<option value="tomorrow_night_blue">Tomorrow Night Blue</option>
-			<option value="tomorrow_night_bright">Tomorrow Night Bright</option>		
-			<option value="tomorrow_night_eighties">Tomorrow Night Eighties</option>
-			<option value="twilight">Twilight</option>		
-			<option value="vibrant_ink">Vibrant Ink</option>
-			<option value="xcode">Xcode</option>																				
+				<option value="ambiance">Ambiance</option>
+				<option value="chaos">Chaos</option>
+				<option value="chrome">Chrome</option>
+				<option value="clouds">Clouds</option>
+				<option value="clouds_midnight">Clouds Midnight</option>
+				<option value="cobalt">Cobalt</option>
+				<option value="crimson_editor">Crimson Editor</option>
+				<option value="dawn">Dawn</option>
+				<option value="dreamweaver">Dreamweaver</option>
+				<option value="eclipse">Eclipse</option>
+				<option value="github">Github</option>
+				<option value="idle_fingers">Idle Fingers</option>
+				<option value="iplastic">Iplastic</option>
+				<option value="katzenmilch">Katzenmilch</option>
+				<option value="kr_theme">KR Theme</option>
+				<option value="kurior">Kurior</option>
+				<option value="merbivore">Merbivore</option>
+				<option value="merbivore_soft">Merbivore Soft</option>
+				<option value="mono_industrial">Mono Industrial</option>
+				<option value="monokai">Monokai</option>
+				<option value="pastel_on_dark">Pastel On Dark</option>
+				<option value="solarized_dark">Solarized Dark</option>
+				<option value="solarized_light">Solarized Light</option>
+				<option value="github">Github</option>
+				<option value="sqlserver">Sqlserver</option>
+				<option value="terminal">Terminal</option>
+				<option value="textmate">Textmate</option>
+				<option value="tomorrow">Tomorrow</option>
+				<option value="tomorrow_night">Tomorrow Night</option>
+				<option value="tomorrow_night_blue">Tomorrow Night Blue</option>
+				<option value="tomorrow_night_bright">Tomorrow Night Bright</option>
+				<option value="tomorrow_night_eighties">Tomorrow Night Eighties</option>
+				<option value="twilight">Twilight</option>
+				<option value="vibrant_ink">Vibrant Ink</option>
+				<option value="xcode">Xcode</option>
 			</select></td>
 		</tr>
 	</table>

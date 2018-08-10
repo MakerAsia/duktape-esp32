@@ -122,7 +122,7 @@ static duk_ret_t js_i2c_master_cmd_begin(duk_context *ctx) {
  */
 static duk_ret_t js_i2c_master_read(duk_context *ctx) {
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -3);
-	duk_bool_t ack = duk_get_boolean(ctx, -1);
+	//duk_bool_t ack = duk_get_boolean(ctx, -1);
 	uint8_t *data;
 	size_t data_len;
 	data = duk_get_buffer_data(ctx, -2, &data_len);

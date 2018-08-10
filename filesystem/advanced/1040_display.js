@@ -4,6 +4,8 @@ var Matrix = require("matrix.js");
 var matrix = new Matrix();
 var display = new Display();
 
+console.log( ESP32.getState().heapSize);
+
 display.fillScreen( Display.WHITE );
 DUKF.sleep(500);
 display.fillScreen( Display.RED );
@@ -15,10 +17,14 @@ DUKF.sleep(500);
 display.fillScreen( Display.BLACK );
 DUKF.sleep(500);
 
+console.log( ESP32.getState().heapSize);
+
 display.setCursor(10, 10);
 display.setTextColor(Display.WHITE);
 display.setTextSize(1);
 display.drawString("Font 2 ABCabc 012345", 0, 0, 1);
+
+console.log( ESP32.getState().heapSize);
 
 DUKF.sleep(1000);
 display.drawRect(100, 100, 50, 50, Display.BLUE);
@@ -33,6 +39,8 @@ display.drawTriangle(30, 30, 180, 100, 80, 150, Display.YELLOW);
 DUKF.sleep(1000);
 display.fillTriangle(30, 30, 180, 100, 80, 150, Display.YELLOW);
 DUKF.sleep(1000);
+
+console.log( ESP32.getState().heapSize);
 
 var t = setInterval(function() {
   display.fillTriangle(
@@ -61,3 +69,5 @@ setInterval(function() {
 for( var i=0; i<t; i++ ) {
     cancelInterval(i)
 }
+
+console.log( ESP32.getState().heapSize);

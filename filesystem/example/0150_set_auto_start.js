@@ -1,5 +1,5 @@
 kidbright.init();
 
-kidbright.setAutoStart( "/example/0130_dweet.js" );
+kidbright.setAutoStart( "/example/1010_hello_display.js" );
 
 ESP32.reboot();

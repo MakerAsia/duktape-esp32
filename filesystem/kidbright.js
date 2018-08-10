@@ -11,7 +11,10 @@ function kidbright() {
     var __matrix = undefined;
     var __dweet = undefined;
     var __buzzer = undefined;
+    var __display = undefined;
+
     var ret = {
+        DISPLAY: undefined,
         loop: function( loopCallback ) {
             __loop = loopCallback;
         },
@@ -121,6 +124,13 @@ function kidbright() {
             var esp32duktapeNS = NVS.open("esp32duktape", "readwrite");
             esp32duktapeNS.erase("start");
             esp32duktapeNS.close();
+        },
+        display: function() {
+            if( __display == undefined ) {
+                this.DISPLAY = require("display.js");
+                __display = new this.DISPLAY();
+            }
+            return __display;
         }
     }
     return ret;

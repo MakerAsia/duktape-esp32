@@ -44,8 +44,6 @@ static duk_ret_t js_dx_displayInit(duk_context *ctx) {
 
 static duk_ret_t js_dx_fillScreen(duk_context *ctx) {
 	int color = duk_get_int(ctx, -1);
-
-	LOGD( "fillScreen C\n" );
 	display.fillScreen(color);  
 
 	return 0;
@@ -54,26 +52,21 @@ static duk_ret_t js_dx_fillScreen(duk_context *ctx) {
 static duk_ret_t js_dx_setCursor(duk_context *ctx) {
 	int x = duk_get_int(ctx, -2);
 	int y = duk_get_int(ctx, -1);
-
-	LOGD( "setCursor C\n" );
 	display.setCursor(x, y);  
 
 	return 0;
 }
 
 static duk_ret_t js_dx_setTextColor(duk_context *ctx) {
-	int color = duk_get_int(ctx, -1);
-
-	LOGD( "setTextColor C\n" );
-	display.setTextColor(color);  
+	int color = duk_get_int(ctx, -2);
+	int bkColor = duk_get_int(ctx, -1);
+	display.setTextColor(color,bkColor);  
 
 	return 0;
 }
 
 static duk_ret_t js_dx_setTextSize(duk_context *ctx) {
 	int size = duk_get_int(ctx, -1);
-
-	LOGD( "setTextSize C\n" );
 	display.setTextSize(size);  
 
 	return 0;
@@ -94,8 +87,6 @@ static duk_ret_t js_dx_drawString(duk_context *ctx) {
 	char buffer[128];
 	memcpy( buffer, data, size );
 	buffer[size] = 0;
-
-	LOGD("Writing %d bytes to display", size);
 
 	int r = display.drawString(buffer,x,y,font);
 	duk_push_int(ctx, r);
@@ -206,7 +197,7 @@ extern "C" {
 		ADD_FUNCTION("displayInit",     js_dx_displayInit,  0);       
 		ADD_FUNCTION("fillScreen",      js_dx_fillScreen,   1);    
 		ADD_FUNCTION("setCursor",   	js_dx_setCursor,   	2);
-		ADD_FUNCTION("setTextColor",   	js_dx_setTextColor, 1);
+		ADD_FUNCTION("setTextColor",   	js_dx_setTextColor, 2);
 		ADD_FUNCTION("setTextSize",   	js_dx_setTextSize,  1);
 		ADD_FUNCTION("drawString",   	js_dx_drawString,   4);
 		ADD_FUNCTION("drawChar",   		js_dx_drawChar,   	4);

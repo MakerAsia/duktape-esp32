@@ -71,7 +71,7 @@ static void gpio_isr_handler(void *args) {
  * }
  */
 static duk_ret_t js_os_accept(duk_context *ctx) {
-	LOGD(">> js_os_accept");
+	//LOGD(">> js_os_accept");
 	if (!duk_is_object(ctx, -1)) {
 		LOGE("js_os_accept: No parameters object found.");
 		return 0;
@@ -81,7 +81,7 @@ static duk_ret_t js_os_accept(duk_context *ctx) {
 		return 0;
 	}
 	int sockfd = duk_get_int(ctx, -1);
-	LOGD(" About to call accept on %d", sockfd);
+	//LOGD(" About to call accept on %d", sockfd);
 	int newSockfd = accept(sockfd, NULL, NULL);
 	if (newSockfd < 0) {
 		LOGE("Error with accept: %d: %d - %s", newSockfd, errno, strerror(errno));
@@ -91,7 +91,7 @@ static duk_ret_t js_os_accept(duk_context *ctx) {
 	duk_push_object(ctx);
 	duk_push_int(ctx, newSockfd);
 	duk_put_prop_string(ctx, -2, "sockfd");
-	LOGD("<< js_os_accept: new socketfd=%d", newSockfd);
+	//LOGD("<< js_os_accept: new socketfd=%d", newSockfd);
 	return 1;
 } // js_os_accept
 
@@ -105,7 +105,7 @@ static duk_ret_t js_os_accept(duk_context *ctx) {
  * returns the bind rc;
  */
 static duk_ret_t js_os_bind(duk_context *ctx) {
-	LOGD(">> js_os_bind");
+	//LOGD(">> js_os_bind");
 	if (!duk_is_object(ctx, -1)) {
 		LOGE("js_os_bind: No parameters object found.");
 		return 0;
@@ -129,13 +129,13 @@ static duk_ret_t js_os_bind(duk_context *ctx) {
 	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serverAddr.sin_port = htons(port);
 
-	LOGD("About to call bind on fd=%d with port=%d", sockfd, port);
+	//LOGD("About to call bind on fd=%d with port=%d", sockfd, port);
 	int rc = bind(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 	if (rc < 0) {
 		LOGE("Error with bind: %d: %d - %s", rc, errno, strerror(errno));
 	}
 	duk_push_int(ctx, rc);
-	LOGD("<< js_os_bind");
+	//LOGD("<< js_os_bind");
 	return 1;
 } // js_os_bind
 
@@ -148,7 +148,7 @@ static duk_ret_t js_os_bind(duk_context *ctx) {
  * There is no return code.
  */
 static duk_ret_t js_os_close(duk_context *ctx) {
-	LOGD(">> js_os_close");
+	//LOGD(">> js_os_close");
 	if (!duk_is_object(ctx, -1)) {
 		LOGE("js_os_close: No parameters object found.");
 		return 0;
@@ -786,7 +786,7 @@ static duk_ret_t js_os_send(duk_context *ctx) {
 	void *data;
 	int sockfd;
 
-	LOGD(">> js_os_send");
+	//LOGD(">> js_os_send");
 	if (!duk_is_object(ctx, -1)) {
 		LOGE("js_os_send: No parameters object found.");
 		return 0;
@@ -817,15 +817,15 @@ static duk_ret_t js_os_send(duk_context *ctx) {
 		}
 	}
 
-	LOGD("About to send %d bytes of data to sockfd=%d", (int)size, sockfd);
-	LOGD("- data: \"%.*s\"", (int)size, (char *)data);
+	//LOGD("About to send %d bytes of data to sockfd=%d", (int)size, sockfd);
+	//LOGD("- data: \"%.*s\"", (int)size, (char *)data);
 	sendRc = send(sockfd, data, size, 0);
 
 	if (sendRc < 0) {
 		LOGE("Error with send: %d: %d - %s", (int)sendRc, errno, strerror(errno));
 	}
 	duk_push_int(ctx, sendRc);
-	LOGD("<< js_os_send");
+	//LOGD("<< js_os_send");
 	return 1;
 } // js_os_send
 
@@ -882,7 +882,7 @@ static duk_ret_t js_os_sha1(duk_context *ctx) {
  * There is no return code.
  */
 static duk_ret_t js_os_shutdown(duk_context *ctx) {
-	LOGD(">> js_os_shutdown");
+	//LOGD(">> js_os_shutdown");
 
 	if (!duk_is_object(ctx, -1)) {
 		LOGE("js_os_shutdown: No parameters object found.");
@@ -895,13 +895,13 @@ static duk_ret_t js_os_shutdown(duk_context *ctx) {
 	int sockfd = duk_get_int(ctx, -1);
 	duk_pop(ctx);
 
-	LOGD("About to shutdown fd=%d", sockfd);
+	//LOGD("About to shutdown fd=%d", sockfd);
 	int rc = shutdown(sockfd, SHUT_RDWR);
 	if (rc < 0) {
 		LOGE("Error with shutdown: %d: %d - %s", rc, errno, strerror(errno));
 	}
 
-	LOGD("<< js_os_shutdown");
+	//LOGD("<< js_os_shutdown");
 	return 0;
 } // js_os_shutdown
 
@@ -914,19 +914,19 @@ static duk_ret_t js_os_shutdown(duk_context *ctx) {
  * * sockfd - The socket file descriptor.
  */
 static duk_ret_t js_os_socket(duk_context *ctx) {
-	LOGD(">> js_os_socket");
+	//LOGD(">> js_os_socket");
 	int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sockfd < 0) {
 		LOGE("Error with socket: %d: %d - %s", sockfd, errno, strerror(errno));
 	} else {
-		LOGD("New socket fd=%d", sockfd);
+		//LOGD("New socket fd=%d", sockfd);
 	}
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &(int){ 1 }, sizeof(int));
 	//fcntl(s, F_SETFL, fcntl(s, F_GETFL, 0) | O_NONBLOCK); // Set the socket to be non blocking.
 	duk_push_object(ctx);
 	duk_push_int(ctx, sockfd);
 	duk_put_prop_string(ctx, -2, "sockfd");
-	LOGD("<< js_os_socket");
+	//LOGD("<< js_os_socket");
 	return 1;
 } // js_os_socket
 
@@ -935,7 +935,7 @@ static duk_ret_t js_os_socket(duk_context *ctx) {
  * Create the OS module in Global.
  */
 void ModuleOS(duk_context *ctx) {
-	LOGD("Registering moduleOS");
+	//LOGD("Registering moduleOS");
 	duk_push_global_object(ctx);
 	// [0] - Global object
 

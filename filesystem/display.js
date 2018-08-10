@@ -50,8 +50,8 @@ function display() {
 		    internalDisplay.setCursor(x, y);
 		},		
 
-		setTextColor: function(color) {
-		    internalDisplay.setTextColor(color);
+		setTextColor: function(color,bkColor) {
+		    internalDisplay.setTextColor(color,bkColor);
 		},		
 
 		setTextSize: function(size) {

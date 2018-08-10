@@ -126,7 +126,7 @@ static duk_ret_t js_i2c_master_read(duk_context *ctx) {
 	uint8_t *data;
 	size_t data_len;
 	data = duk_get_buffer_data(ctx, -2, &data_len);
-	LOGD(">> i2c_master_read: length=%d", data_len);
+	//LOGD(">> i2c_master_read: length=%d", data_len);
 // Note: This API does not ACTUALLY read the data from I2C ... it only
 // queues the request to subsequently read the data.  We can't use the data
 // until after the command has been executed with cmd_begin().
@@ -212,7 +212,7 @@ static duk_ret_t js_i2c_master_write_byte(duk_context *ctx) {
 	i2c_cmd_handle_t cmd_handle = duk_get_pointer(ctx, -3);
 	uint8_t data = (uint8_t)duk_get_int(ctx, -2);
 	bool ack_en = duk_get_boolean(ctx, -1);
-	LOGD(">> js_i2c_master_write_byte: data=0x%.2x, ack=%d", data, ack_en);
+	//LOGD(">> js_i2c_master_write_byte: data=0x%.2x, ack=%d", data, ack_en);
 
 	if (!duk_is_pointer(ctx, -3) || !duk_is_number(ctx, -2) || !duk_is_boolean(ctx, -1)) {
 		LOGE("Invalid parameters");

@@ -7,6 +7,7 @@ $(document).ready(function() {
 	window._kbxIde = {
 		alive: true,
 		isFsDirty: true,
+		saveAsAutoStart: false,
 		fsCachedData: [],
 		setFsDirty: function(status) {
 			_kbxIde.isFsDirty = status;
@@ -229,6 +230,7 @@ $(document).ready(function() {
 	$("#saveAsAutoStart").button({
 		// icon: "ui-icon-save"
 	}).click(function() {
+		_kbxIde.saveAsAutoStart = true;
 		populateSelectWithFiles($("#saveSelect"), function() {
 			$("#saveFileNameText").val("");
 			$("#saveDialog").dialog("open");
@@ -236,17 +238,10 @@ $(document).ready(function() {
 	});
 
 	$("#saveSelect").change(function(event) {
-		$.ajax({
-			url: "http://" + settings.esp32_host + "/files",
-			method: "GET",
-			dataType: "json",
-			success: function(data) {
-				populateSelectWithFiles($("#saveSelect"), function() {
-					$("#saveFileNameText").val("");
-					$("#saveDialog").dialog("open");
-				});
-			} // Success
-		}); // .ajax
+		populateSelectWithFiles($("#saveSelect"), function() {
+			$("#saveFileNameText").val("");
+			$("#saveDialog").dialog("open");
+		});
 	});
 
 	/**
@@ -254,17 +249,10 @@ $(document).ready(function() {
 	 * This will open the save dialog.
 	 */
 	$("#save").button().click(function() {
-		$.ajax({
-			url: "http://" + settings.esp32_host + "/files",
-			method: "GET",
-			dataType: "json",
-			success: function(data) {
-				populateSelectWithFiles($("#saveSelect"), function() {
-					$("#saveFileNameText").val("");
-					$("#saveDialog").dialog("open");
-				});
-			} // Success
-		}); // .ajax
+		populateSelectWithFiles($("#saveSelect"), function() {
+			$("#saveFileNameText").val("");
+			$("#saveDialog").dialog("open");
+		});
 	});
 
 	// Handle the settings button.
@@ -314,8 +302,13 @@ $(document).ready(function() {
 					// Make a REST call to the ESP32 to save the data.  The URL is:
 					// POST /files/<fileName>
 					// Body: Data to save
+					var saveOption = "";
+					if (_kbxIde.saveAsAutoStart) {
+						saveOption = "?autoStart";
+					}
+					_kbxIde.saveAsAutoStart = false;
 					$.ajax({
-						url: "http://" + settings.esp32_host + "/files" + selectedFile,
+						url: "http://" + settings.esp32_host + "/files" + selectedFile + saveOption,
 						method: "POST",
 						data: editor.getValue(),
 						success: function(data) {
@@ -328,6 +321,7 @@ $(document).ready(function() {
 			{
 				text: "Cancel",
 				click: function() {
+					_kbxIde.saveAsAutoStart = false;
 					$(this).dialog("close");
 				}
 			}

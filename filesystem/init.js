@@ -68,6 +68,7 @@ var _isr_gpio = {};
 var _sockets= {};
 
 var kidbright = {};
+var kb = kidbright;
 
 var _timers = {
 	nextId: 1,

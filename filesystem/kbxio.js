@@ -30,6 +30,8 @@ function kbxio() {
     var ret = {
         lastKey: 0,
         lastKeyIn: 0,
+        lastUpdate: 0,
+        disabled: false,
         readHID: function() {
             i2c.beginTransaction(KBX_ADDRESS);
             i2c.write(KBX_REG_HID_DATA);
@@ -57,11 +59,25 @@ function kbxio() {
                 }
                 else if( hid[1] >= 30 && hid[1] <= 38 ) {
                     // 1-9
-                    c = 0x31+hid[1]-30;
+                    if( hid[0] & 2 ) {
+                        c = "!@#$%^&*(".charCodeAt(hid[1]-30);
+                    }
+                    else {
+                        c = 0x31+hid[1]-30;
+                    }
                 }
                 else if( hid[1] == 39 ) {
                     // 0
-                    c = 0x30;
+                    if( hid[0] & 2 ) {
+                        c = 0x29;
+                    }
+                    else {
+                        c = 0x30;
+                    }
+                }
+                else if( hid[1] == 42 ) {
+                    // backspace
+                    c = 8;
                 }
                 else if( hid[1] == 54 ) {
                     // ,
@@ -94,7 +110,13 @@ function kbxio() {
             }
         },
         update: function() {
-            this.readHID();
+            if( this.disabled )
+                return;
+            var ms = new Date().getTime();
+            if( ms-this.lastUpdate > 200 ) {
+                this.lastUpdate = ms;
+                this.readHID();
+            }
         },
         getKey: function() {
             if( this.lastKey != 0 ) {

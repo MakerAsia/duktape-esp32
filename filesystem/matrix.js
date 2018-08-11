@@ -95,9 +95,13 @@ function matrix() {
 				internalMatrix.writeDisplay();
 				
 				x--;
-				if( x < (0-(text.length * 8)+16) )
+				if( x < (0-(text.length * 8)) )
 					x = 16;    
 			}, 80);
+		},
+
+		scroll: function(text) {
+			this.printScroll( text );
 		}
 		
 	}; // End ret

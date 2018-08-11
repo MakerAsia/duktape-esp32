@@ -103,7 +103,7 @@ static duk_ret_t js_i2c_master_cmd_begin(duk_context *ctx) {
 	if (errRc != ESP_OK) {
 		LOGE("Error: i2c_master_cmd_begin: esp_err_t=%s", esp32_errToString(errRc));
 	}
-	LOGD("<< js_i2c_master_cmd_begin: %d", errRc);
+	//LOGD("<< js_i2c_master_cmd_begin: %d", errRc);
 	duk_push_int(ctx, errRc);
 	return 1;
 } // js_i2c_master_cmd_begin

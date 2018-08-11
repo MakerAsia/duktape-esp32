@@ -27,22 +27,83 @@ function kbxio() {
 
     var hid = new Buffer(16);
 
-    
-
     var ret = {
-        function readHID() {
-            i2cDevice.beginTransaction(KBX_ADDRESS);
-            i2cDevice.write(KBX_REG_HID_DATA);
-            i2cDevice.endTransaction();
-            i2cDevice.beginTransaction(KBX_ADDRESS,false);
-            i2cDevice.read(hid);
-            i2cDevice.endTransaction();    
+        lastKey: 0,
+        lastKeyIn: 0,
+        readHID: function() {
+            i2c.beginTransaction(KBX_ADDRESS);
+            i2c.write(KBX_REG_HID_DATA);
+            i2c.endTransaction();
+            i2c.beginTransaction(KBX_ADDRESS,false);
+            i2c.read(hid);
+            i2c.endTransaction();    
             
-            console.log( hid[0] );
-            console.log( hid[1] );
-            console.log( hid[2] );
-            console.log( hid[3] );
-        }    
+            //console.log( hid[0] );
+            //console.log( hid[1] );
+            //console.log( hid[2] );
+            //console.log( hid[3] );
+            if( hid[1] != 0 ) {
+                var c = hid[1];
+                if( hid[1] == 44 ) {
+                    // space
+                    c = 0x20;
+                }
+                else if( hid[1] >= 4 && hid[1] < (4+26) ) {
+                    // a - z
+                    c = 0x61+hid[1]-4;
+                    if( hid[0] & 2 ) {
+                        c -= 0x20;
+                    }
+                }
+                else if( hid[1] >= 30 && hid[1] <= 38 ) {
+                    // 1-9
+                    c = 0x31+hid[1]-30;
+                }
+                else if( hid[1] == 39 ) {
+                    // 0
+                    c = 0x30;
+                }
+                else if( hid[1] == 54 ) {
+                    // ,
+                    c = 0x2c;
+                }
+                else if( hid[1] == 55 ) {
+                    // .
+                    c = 0x2e;
+                }
+                else if( hid[1] == 40 ) {
+                    c = 0x0D;
+                }
+                else if( hid[1] == 51 ) {
+                    // ;
+                    c = 0x3b;
+                }
+                else if( hid[1] == 52 ) {
+                    // ;
+                    c = 0x27;
+                }
+                if( c != this.lastKeyIn ) {
+                    log( hid[0] );
+                    log( hid[1] );
+                    this.lastKeyIn = c;
+                    this.lastKey = c;
+                }
+            }
+            else {
+                this.lastKeyIn = 0;
+            }
+        },
+        update: function() {
+            this.readHID();
+        },
+        getKey: function() {
+            if( this.lastKey != 0 ) {
+                var l = this.lastKey;
+                this.lastKey = 0;
+                return l;
+            }
+            return 0;
+        }
 	}	
     return ret;	
 }  

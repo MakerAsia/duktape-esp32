@@ -12,10 +12,12 @@ function kidbright() {
     var __dweet = undefined;
     var __buzzer = undefined;
     var __display = undefined;
+    var __kbxio = undefined;
 
     var ret = {
         DISPLAY: undefined,
         MATRIX: undefined,
+        KBXIO: undefined,
         loop: function( loopCallback ) {
             __loop = loopCallback;
         },
@@ -27,6 +29,9 @@ function kidbright() {
                 if( __btn[i] ) {
                     __btn[i].read();
                 }
+            }
+            if( __kbxio ) {
+                __kbxio.update();
             }
             if( __loop != undefined ) {
                 __loop();
@@ -132,6 +137,14 @@ function kidbright() {
                 __display = new this.DISPLAY();
             }
             return __display;
+        },
+        kbxio: function() {
+            if( __kbxio == undefined ) {
+                this.KBXIO = require("kbxio.js");
+                __kbxio = new this.KBXIO();
+                __kbxio.update();
+            }
+            return __kbxio;
         }
     }
     return ret;

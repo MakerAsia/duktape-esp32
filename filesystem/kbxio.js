@@ -113,7 +113,7 @@ function kbxio() {
             if( this.disabled )
                 return;
             var ms = new Date().getTime();
-            if( ms-this.lastUpdate > 200 ) {
+            if( ms-this.lastUpdate > 150 ) {
                 this.lastUpdate = ms;
                 this.readHID();
             }

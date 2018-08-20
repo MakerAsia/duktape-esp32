@@ -21,9 +21,75 @@ kidbright.kbxio().getKey();
 
 var running = false;
 
-kidbright.loop(function() {
-    if( running )
+var code = "";
+var runTimer;
+
+var led1 = kidbright.ledBT();
+var led2 = kidbright.ledWIFI();
+var led3 = kidbright.ledNTP();
+var led4 = kidbright.ledIOT();
+var matrix = kidbright.matrix();
+var printText = "";
+var printX = 0;
+function print( text ) {
+    if( text == printText ) {
         return;
+    }
+    printText = text;
+    printX = 16;
+    matrix.clear();
+    matrix.setCursor(printX,0);
+    matrix.print( printText );
+}
+function update() {
+    printX--;
+	if( printX < (0-(printText.length * 8)) )
+		printX = 16;    
+    matrix.clear();
+    matrix.setCursor(printX,0);
+    matrix.print( printText );
+    
+}
+function delay( t ) {
+    DUKF.sleep( t );
+}
+
+kidbright.loop(function() {
+    if( running ) {
+        if( kidbright.button(0).wasPressed() ) {
+            cancelInterval( runTimer );
+            running = false;
+            kidbright.kbxio().disabled = false; 
+        }
+    }
+    else {
+        if( kidbright.button(1).wasPressed() ) {
+            running = true;
+            kidbright.kbxio().disabled = true; 
+            code = "runTimer = setInterval(function() {\n"
+            code = code + "if( kidbright.button(0).wasPressed() ) {\n"
+            code = code + "cancelInterval( runTimer );\n"
+            code = code + "running = false;\n"
+            code = code + "kidbright.kbxio().disabled = false;\n"
+            code = code + "}\n"
+
+            for( var i=0; i<lines.length; i++ ) {
+                code = code + lines[i];
+                code = code + "\n";
+            }
+            code = code + "update();\n"
+            code = code + "},50);\n"
+            log( code );
+            try {
+                eval( code );
+            }
+            catch( e ) {
+                cancelInterval( runTimer );
+                running = false;
+                kidbright.kbxio().disabled = false; 
+            }
+        }        
+    }
     var ms = new Date().getTime();
     var key = kidbright.kbxio().getKey();
     if( key ) {
@@ -46,15 +112,26 @@ kidbright.loop(function() {
                     kidbright.display().drawString("  ", posnX, posnY, 1);
                     currentPosn--;
                 }
+                else {
+                    log( "8 line start" );
+                    if( lineIndex > 0 ) {
+                        kidbright.display().drawString("  ", posnX, posnY, 1);
+                        log( "line" + currentLine );
+                        lineIndex--;
+                        currentLine = lines[lineIndex];
+                        log( "line" + currentLine );
+                        currentPosn = currentLine.length;
+                        posnX = currentLine.length * 7;
+                        posnY -= 10;
+                        log( "OK" );
+                    }
+                }
             }
             else if( key == 13 ) {
                 kidbright.display().drawString(" ", posnX, posnY, 1);
                 posnX = 0;
                 posnY += 10;
                 log( currentLine );
-                running = true;
-                kidbright.kbxio().disabled = true; 
-                eval( currentLine );
                 // To do -- its never come out... ha ha
                 lines[lineIndex] = currentLine;
                 lineIndex++;

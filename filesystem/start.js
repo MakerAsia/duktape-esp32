@@ -14,7 +14,9 @@ function startIDE() {
 
 function autoStart() {
 	if( !runStart() ) {
-		kidbright.matrix().printScroll( WIFI.getState().staIp )
+		if( DUKF.device() & 0x1000 ) {
+			kidbright.matrix().printScroll( WIFI.getState().staIp )
+		}
 		startIDE();
 	}
 }

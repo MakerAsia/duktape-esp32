@@ -1,0 +1,32 @@
+menu "Duktape-ESP32 Configuration"
+
+config LED_GPIO
+    int "Blink GPIO number"
+	range 0 34
+	default 12
+	help
+		GPIO number (IOxx) to blink on and off.
+
+		Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to blink.
+
+		GPIOs 35-39 are input-only so cannot be used as outputs.
+
+choice DUKTAPE_DEVICE
+    bool "Duktape Device"
+    default DUKTAPE_DEVICE_KIDBRIGHT
+    help
+        Specify which partition scheme to be used.
+        
+config DUKTAPE_DEVICE_KIDBRIGHT
+    bool "Kidbright"
+config DUKTAPE_DEVICE_TTGO_ETC
+    bool "TTGO ETC"
+config DUKTAPE_DEVICE_ODROID_GO
+    bool "Odroid GO"
+config DUKTAPE_DEVICE_M5STACK
+    bool "M5Stack"
+endchoice
+        
+endmenu
+
+

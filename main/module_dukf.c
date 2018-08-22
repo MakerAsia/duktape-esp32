@@ -120,6 +120,23 @@ static duk_ret_t js_dukf_sleep(duk_context *ctx) {
 	return 0;
 } // js_dukf_sleep
 
+/*
+ * Get the GPIO level of the pin.
+ */
+static duk_ret_t js_dukf_device(duk_context *ctx) {
+	int dev_id = 0;
+	#ifdef CONFIG_DUKTAPE_DEVICE_KIDBRIGHT
+		dev_id = 0x1001;
+	#elif CONFIG_DUKTAPE_DEVICE_TTGO_ETC
+		dev_id = 0x2000;
+	#elif CONFIG_DUKTAPE_DEVICE_ODROID_GO
+		dev_id = 0x4000;
+	#elif CONFIG_DUKTAPE_DEVICE_M5STACK
+		dev_id = 0x8000;
+	#endif
+	duk_push_int(ctx, dev_id);
+	return 1;
+} // js_os_gpioGetLevel
 
 void ModuleDUKF(duk_context *ctx) {
 	duk_push_global_object(ctx);
@@ -137,6 +154,7 @@ void ModuleDUKF(duk_context *ctx) {
 	ADD_FUNCTION("runFile",      js_dukf_runFile,       1);
 	ADD_FUNCTION("setStartFile", js_dukf_setStartFile,  1);
 	ADD_FUNCTION("sleep",        js_dukf_sleep,         1);
+	ADD_FUNCTION("device",       js_dukf_device,        0);
 
 
 #if defined(ESP_PLATFORM)

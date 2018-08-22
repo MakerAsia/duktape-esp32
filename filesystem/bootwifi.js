@@ -123,8 +123,9 @@ function becomeAccessPoint(callback) {
 		log("***********************");
 		log("IP Address: " + WIFI.getState().apIp);
 		log("AP SSID: " + "esp32-"+cpuid);
-		
-		kidbright.matrix().printScroll( cpuid );
+		if( DUKF.device() & 0x1000 ) {
+			kidbright.matrix().printScroll( cpuid );
+		}
 		// and start a WebServer
 		//startWebServer();
 		//bootedCallback();

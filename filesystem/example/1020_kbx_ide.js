@@ -59,7 +59,7 @@ kidbright.loop(function() {
         if( kidbright.button(0).wasPressed() ) {
             cancelInterval( runTimer );
             running = false;
-            kidbright.kbxio().disabled = false; 
+            kidbright.kbxio().enable(); 
         }
     }
     else {

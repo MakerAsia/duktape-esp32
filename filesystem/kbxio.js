@@ -32,6 +32,13 @@ function kbxio() {
         lastKeyIn: 0,
         lastUpdate: 0,
         disabled: false,
+        disable: function() {
+            this.disabled = true;
+        },
+        enable: function() {
+            i2c = new I2C(options);
+            this.disabled = false;
+        },
         readHID: function() {
             i2c.beginTransaction(KBX_ADDRESS);
             i2c.write(KBX_REG_HID_DATA);

@@ -126,7 +126,9 @@ static duk_ret_t js_dukf_sleep(duk_context *ctx) {
 static duk_ret_t js_dukf_device(duk_context *ctx) {
 	int dev_id = 0;
 	#ifdef CONFIG_DUKTAPE_DEVICE_KIDBRIGHT
-		dev_id = 0x1001;
+		dev_id = 0x1000;
+	#elif CONFIG_DUKTAPE_DEVICE_KBX
+		dev_id = 0x1100;
 	#elif CONFIG_DUKTAPE_DEVICE_TTGO_ETC
 		dev_id = 0x2000;
 	#elif CONFIG_DUKTAPE_DEVICE_ODROID_GO

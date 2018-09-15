@@ -19,8 +19,10 @@ choice DUKTAPE_DEVICE
         
 config DUKTAPE_DEVICE_KIDBRIGHT
     bool "Kidbright"
+config DUKTAPE_DEVICE_KBX
+    bool "KBX"
 config DUKTAPE_DEVICE_TTGO_ETC
-    bool "TTGO ETC"
+    bool "TTGO BTC"
 config DUKTAPE_DEVICE_ODROID_GO
     bool "Odroid GO"
 config DUKTAPE_DEVICE_M5STACK
